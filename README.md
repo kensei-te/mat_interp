@@ -1,31 +1,29 @@
-# test_nn
-How to get ready (install)
+# NN interp
 
-1. install tensorflow  
-	% pip install tensorflow==2.8.0  
+## How to get ready (install)
 
-1. install tensorflow_addons  
-	% pip install tensorflow_addons  
-1. install optuna  
-	% pip install optuna==??? (I dont know, let me check later)  
-1. install streamlit  
-	% pip install streamlit==??? (I dont know, let me check later)  
-1. install mysql  
-	version = 8.0  
-1. install pymysql  
-	% pip install pymysql==??? (I dont know, let me check later)  
-1.  enter mysql, create database  
-1.  in mysql, create user  
-1.  in mysql, allow user to modify the specified database only  
-1.  edit “conf.ini” provided in NN_interp folder, to adopt username and password  
+### Scripts and Enviroment Setup
+We recommend using conda for installing.
+1. Download this repository (git clone or simply 
+download)
+2. Create the enviroment using:
+```bash
+conda create env -f enviroment.yml
+```
+
+3. Activate the enviroment:
+```bash
+conda activate nninterp
+```
+4. After this is done, follow the below procedures for setting up MySQL server (Used to run optimization of neural networks architeture in parallel.)
 
 
 
 
 
 
-
-install mysql for CentOS7  
+### MySQL Installation for Optimization (CentOS7)
+#### Installation
 1. delete MariaDB, which is installed by default but may compete with MySQL  
 	- make sure what MariaDB packages you have  
 		% rpm -qa | grep aria
@@ -40,10 +38,7 @@ install mysql for CentOS7
 4. install MySQL8.0  
 	% yum install —enablerepo=mysql80-community mysql-community-server
 
-
-
-
-setting for mysql for CentOS7  
+#### Setup
 1. make sure the initial password for root  
 	% cat /var/log/mysqld.log | grep password  
 2. login to MySQL, using the initial password above  
@@ -85,7 +80,8 @@ setting for mysql for CentOS7
 	% sudo systemctl stop mysql  
 
 
-How to launch NN_interp:
+## Usage
+### Launching
   1. in case you have environment, activate the environment
   2. if not booted yet, boot mysql (database to store learning result):
 	% sudo systemctl start mysqld
@@ -98,7 +94,7 @@ How to launch NN_interp:
 
 
 
-How to use NN_interp  
+### Using
   1. prepare csv file of your experimental data
   1. enter working folder name
   1. upload the csv file
