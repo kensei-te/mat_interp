@@ -252,7 +252,9 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```
 	in case you are using other shell, modify ".bashrc" to corresponding one
 4. set path for mysql
-	% source ~/.bashrc
+	```bash
+	source ~/.bashrc
+	```
 	in case you are using other shell, modify ".bashrc" to corresponding one
 #### Setup
 1. set password for root
@@ -327,12 +329,21 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 ## Usage
 ### Launch app
   1. in case you have environment, activate the environment
+		```bash
+		conda activate 'your_environment'
+		```
   2. if not booted yet, boot mysql (database to store learning result):
-	% sudo systemctl start mysqld
+		```bash
+		sudo systemctl start mysqld
+		```
   3. change currnt directory to NN_interp folder:
-	% cd (your_directory)/NN_interp
+		```bash
+		cd (your_directory)/NN_interp
+		```
   4. start streamlit app (GUI):
-	% streamlit run app.py
+		```bash
+		streamlit run app.py
+		```
   5. access to streamlit GUI from your web_browser:
 	http://127.0.0.1:8501/
 
