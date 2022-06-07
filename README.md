@@ -29,16 +29,16 @@ download)
 	conda create env -f environment.yml
 	```
 
-3. Activate the environment:
+3. Activate the environment (name of environment is 'nninterp' by default):
 	```bash
 	conda activate nninterp
 	```
-4. After this is done, follow the below procedures for setting up MySQL server (Used to run optimization of neural networks architeture in parallel.)
+4. After this is done, follow the below procedures for setting up MySQL server (local database used to take care data of optimization process of neural networks architeture in parallel.)
 
 
 
 
-### 2. MySQL Installation for Optimization
+### 2. MySQL Installation
 The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 
