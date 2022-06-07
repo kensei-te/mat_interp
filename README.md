@@ -46,59 +46,98 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 #### Installation
 1. update apt just in case  
-	% sudo apt update
+	```bash
+	sudo apt update
+	```
 2. check available package
-	% apt-cache policy mysql-server
-	suppose "8.0.22-0ubuntu0.20.04.2" is shown as Candidate:
+	```bash
+	apt-cache policy mysql-server
+	```
+	...suppose "8.0.22-0ubuntu0.20.04.2" is shown as candidate,
 3. simulate installation
-	% apt-get install -s mysql-client=8.0.22-0ubuntu0.20.04.2
-	% apt-get install -s mysql-community-server=8.0.22-0ubuntu0.20.04.2
-	% apt-get install -s mysql-server=8.0.22-0ubuntu0.20.04.2
+	```bash
+	apt-get install -s mysql-client=8.0.22-0ubuntu0.20.04.2
+	```
+	```bash
+	apt-get install -s mysql-community-server=8.0.22-0ubuntu0.20.04.2
+	```
+	```bash
+	apt-get install -s mysql-server=8.0.22-0ubuntu0.20.04.2
+	```
 	if there is no error, let's install them
 4. install
-	% apt-get install mysql-client=8.0.22-0ubuntu0.20.04.2
-	% apt-get install mysql-community-server=8.0.22-0ubuntu0.20.04.2
-	% apt-get install mysql-server=8.0.22-0ubuntu0.20.04.2
+	```bash
+	apt-get install mysql-client=8.0.22-0ubuntu0.20.04.2
+	```
+	```bash
+	apt-get install mysql-community-server=8.0.22-0ubuntu0.20.04.2
+	```
+	```bash
+	apt-get install mysql-server=8.0.22-0ubuntu0.20.04.2
+	```
 #### Setup
 1. set password for root
-	% sudo mysql-secure_installation
+	```bash
+	sudo mysql-secure_installation
+	```
 	set your password
 2. keep answering yes, until the script "mysql-secure_installation" ends
 3. login to MySQL, using the password set above  
-	% mysql -u root -p
+	```bash
+	mysql -u root -p
+	```
 4. create a database, called “NN_interp”
+	```bash
 	mysql> CREATE DATABASE IF NOT EXISTS NN_interp;
+	```
 5. create user, username: nn_user_1, password:nn_user_1_P  
+	```bash
 	mysql> CREATE USER IF NOT EXISTS nn_user_1@localhost IDENTIFIED BY ‘nn_user_1_P’;
+	```
 6. allow user to modify only database named “NN_interp”
+	```bash
 	mysql> GRANT ALL PRIVILEGES ON NN_interp.* TO nn_user_1@localhost;
+	```
 7. release memory
+	```bash
 	mysql> FLUSH PRIVILEGES;
+	```
 8. exit mysql_console
+	```bash
 	mysql> exit;
-9. make a configuration file “.my.cnf” for mysql, where username etc is written  
-	at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing python file of NN_interp, and you do not need to enter password each time.  You can modify the setting to make things safer.
+	```
+9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- at your home directory:  
-	% vi .my.cnf
-	[client]
-	user = nn_user_1
-	password = nn_user_1_P
+		```bash
+		vi .my.cnf
+		```
+	[client]  
+	user = nn_user_1  
+	password = nn_user_1_P  
 
 	- at NN_interp folder:  
 	modify config.ini if you change username and password
 
 10. confine the accessibility of those files to the current user only
-	% chmod 600 .my.cnf
-	% chmod 600 NN_conf
+	```bash
+	chmod 600 .my.cnf
+	chmod 600 NN_conf
+	```
 
 11. check if mysql is booted  
-	% systemctl status mysqld
+	```bash
+	systemctl status mysqld
+	```
 
     - in case it is not started:  
-	% sudo systemctl start mysqld  
+		```bash
+		sudo systemctl start mysqld
+		```  
     - in case you want to stop mysql:  
-	% sudo systemctl stop mysql  
+		```bash
+		sudo systemctl stop mysql  
+		```
 </div></details>
 
 
@@ -160,8 +199,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written  
-	at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing python file of NN_interp, and you do not need to enter password each time.  You can modify the setting to make things safer.
+9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- at your home directory:  
 		```bash
@@ -201,11 +239,17 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 #### Installation
 1. (In case it is not installed) install Homebrew, which helps installation of MySQL
-	% /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	```bash
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	```
 2. Install MySQL using Homebrew
-	% brew install mysql@8.0
+	```bash
+	brew install mysql@8.0
+	```
 3. set path for mysql
-	% echo 'export PATH="/usr/local/opt/mysql@8.0/bin:$pATH"' >> ~/.bashrc
+	```bash
+	echo 'export PATH="/usr/local/opt/mysql@8.0/bin:$pATH"' >> ~/.bashrc
+	```
 	in case you are using other shell, modify ".bashrc" to corresponding one
 4. set path for mysql
 	% source ~/.bashrc
@@ -239,8 +283,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written  
-	at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing python file of NN_interp, and you do not need to enter password each time.  You can modify the setting to make things safer.
+9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- at your home directory:  
 		```bash
@@ -289,7 +332,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
   3. change currnt directory to NN_interp folder:
 	% cd (your_directory)/NN_interp
   4. start streamlit app (GUI):
-	% streamlit run NN_interp.py
+	% streamlit run app.py
   5. access to streamlit GUI from your web_browser:
 	http://127.0.0.1:8501/
 
