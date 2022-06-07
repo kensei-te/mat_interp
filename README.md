@@ -1,4 +1,4 @@
-# NN interp
+# Mat interp
 
 [Overview](#overview)  
 [Operating System](#operating-system)  
