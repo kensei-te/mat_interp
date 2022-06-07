@@ -4,20 +4,20 @@
 This code is to perform neural networks learning of preliminary or repository experimental data, to simulate future experiments. 
 For details, refer to:
 
-![gif](https://github.com/ktkktkt/test_nn/overview.gif)
+![gif](overview.gif)
 
 ## How to get ready (install)
 
-### Scripts and Enviroment Setup
+### Scripts and Environment Setup
 We recommend using conda for installing.
 1. Download this repository (git clone or simply 
 download)
 2. Create the enviroment using:
 ```bash
-conda create env -f enviroment.yml
+conda create env -f environment.yml
 ```
 
-3. Activate the enviroment:
+3. Activate the environment:
 ```bash
 conda activate nninterp
 ```
@@ -87,7 +87,7 @@ conda activate nninterp
 
 
 ## Usage
-### Launching
+### Launch app
   1. in case you have environment, activate the environment
   2. if not booted yet, boot mysql (database to store learning result):
 	% sudo systemctl start mysqld
@@ -100,7 +100,7 @@ conda activate nninterp
 
 
 
-### Using
+### Use
   1. prepare csv file of your experimental data
   1. enter working folder name
   1. upload the csv file
