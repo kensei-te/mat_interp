@@ -6,7 +6,7 @@
 [Usage](#usage)  
 
 ## Overview
-This code iaas to perform neural networks learning of preliminary or repository experimental data, to simulate future experiments.  
+This code is to perform neural networks learning of preliminary or repository experimental data, to simulate future experiments.  
 For details, refer to:
 
 ![gif](overview.gif)
