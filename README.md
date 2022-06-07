@@ -1,5 +1,11 @@
 # NN interp
 
+## Overview
+This code is to perform neural networks learning of preliminary or repository experimental data, to simulate future experiments. 
+For details, refer to:
+
+![gif](https://github.com/ktkktkt/test_nn/overview.gif)
+
 ## How to get ready (install)
 
 ### Scripts and Enviroment Setup
