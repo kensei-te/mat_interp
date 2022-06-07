@@ -29,9 +29,9 @@ download)
 	conda create env -f environment.yml
 	```
 
-3. Activate the environment (name of environment is 'nninterp' by default):
+3. Activate the environment (name of environment is 'mat_interp' by default, it can be changed by modifying environment.yml):
 	```bash
-	conda activate nninterp
+	conda activate mat_interp
 	```
 4. After this is done, follow the below procedures for setting up MySQL server (local database used to take care data of optimization process of neural networks architeture in parallel.)
 
@@ -86,17 +86,17 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql -u root -p
 	```
-4. create a database, called “NN_interp”
+4. create a database, called “Mat_interp”
 	```bash
-	mysql> CREATE DATABASE IF NOT EXISTS NN_interp;
+	mysql> CREATE DATABASE IF NOT EXISTS Mat_interp;
 	```
-5. create user, username: nn_user_1, password:nn_user_1_P  
+5. create user, username: mat_user_1, password:mat_user_1_P  
 	```bash
-	mysql> CREATE USER IF NOT EXISTS nn_user_1@localhost IDENTIFIED BY ‘nn_user_1_P’;
+	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY ‘mat_user_1_P’;
 	```
-6. allow user to modify only database named “NN_interp”
+6. allow user to modify only database named “Mat_interp”
 	```bash
-	mysql> GRANT ALL PRIVILEGES ON NN_interp.* TO nn_user_1@localhost;
+	mysql> GRANT ALL PRIVILEGES ON Mat_interp.* TO mat_user_1@localhost;
 	```
 7. release memory
 	```bash
@@ -106,23 +106,23 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- at your home directory:  
 		```bash
 		vi .my.cnf
 		```
 	[client]  
-	user = nn_user_1  
-	password = nn_user_1_P  
+	user = mat_user_1  
+	password = mat_user_1_P  
 
-	- at NN_interp folder:  
+	- at Mat_interp folder:  
 	modify config.ini if you change username and password
 
 10. confine the accessibility of those files to the current user only
 	```bash
 	chmod 600 .my.cnf
-	chmod 600 NN_conf
+	chmod 600 Mat_conf
 	```
 
 11. check if mysql is booted  
@@ -179,17 +179,17 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> set password for root@localhost=‘new_password’;
 	```
-4. create a database, called “NN_interp”
+4. create a database, called “Mat_interp”
 	```bash
-	mysql> CREATE DATABASE IF NOT EXISTS NN_interp;
+	mysql> CREATE DATABASE IF NOT EXISTS Mat_interp;
 	```
-5. create user, username: nn_user_1, password:nn_user_1_P  
+5. create user, username: mat_user_1, password:mat_user_1_P  
 	```bash
-	mysql> CREATE USER IF NOT EXISTS nn_user_1@localhost IDENTIFIED BY ‘nn_user_1_P’;
+	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY ‘mat_user_1_P’;
 	```
-6. allow user to modify only database named “NN_interp”
+6. allow user to modify only database named “Mat_interp”
 	```bash
-	mysql> GRANT ALL PRIVILEGES ON NN_interp.* TO nn_user_1@localhost;
+	mysql> GRANT ALL PRIVILEGES ON Mat_interp.* TO mat_user_1@localhost;
 	```
 7. release memory
 	```bash
@@ -199,23 +199,23 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- at your home directory:  
 		```bash
 		vi .my.cnf
 		```
 		[client]  
-		user = nn_user_1  
-		password = nn_user_1_P
+		user = mat_user_1  
+		password = mat_user_1_P
 
-	- at NN_interp folder:  
+	- at Mat_interp folder:  
 		modify config.ini if you change username and password
 
 10. confine the accessibility of those files to the current user only
 	```bash
 	chmod 600 .my.cnf
-	chmod 600 NN_conf
+	chmod 600 Mat_conf
 	```
 
 11. check if mysql is booted  
@@ -265,17 +265,17 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> set password for root@localhost=‘new_password’;
 	```
-4. create a database, called “NN_interp”
+4. create a database, called “Mat_interp”
 	```bash
-	mysql> CREATE DATABASE IF NOT EXISTS NN_interp;
+	mysql> CREATE DATABASE IF NOT EXISTS Mat_interp;
 	```
-5. create user, username: nn_user_1, password:nn_user_1_P  
+5. create user, username: mat_user_1, password:mat_user_1_P  
 	```bash
-	mysql> CREATE USER IF NOT EXISTS nn_user_1@localhost IDENTIFIED BY ‘nn_user_1_P’;
+	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY ‘mat_user_1_P’;
 	```
-6. allow user to modify only database named “NN_interp”
+6. allow user to modify only database named “Mat_interp”
 	```bash
-	mysql> GRANT ALL PRIVILEGES ON NN_interp.* TO nn_user_1@localhost;
+	mysql> GRANT ALL PRIVILEGES ON Mat_interp.* TO mat_user_1@localhost;
 	```
 7. release memory
 	```bash
@@ -285,23 +285,23 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only NN_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- at your home directory:  
 		```bash
 		vi .my.cnf
 		```
 		[client]  
-		user = nn_user_1  
-		password = nn_user_1_P
+		user = mat_user_1  
+		password = mat_user_1_P
 
-	- at NN_interp folder:  
+	- at Mat_interp folder:  
 		modify config.ini if you change username and password
 
 10. confine the accessibility of those files to the current user only
 	```bash
 	chmod 600 .my.cnf
-	chmod 600 NN_conf
+	chmod 600 Mat_conf
 	```
 
 11. check if mysql is booted  
@@ -336,9 +336,9 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```bash
 		sudo systemctl start mysqld
 		```
-  3. change currnt directory to NN_interp folder:
+  3. change currnt directory to Mat_interp folder:
 		```bash
-		cd (your_directory)/NN_interp
+		cd (your_directory)/Mat_interp
 		```
   4. start streamlit app (GUI):
 		```bash
