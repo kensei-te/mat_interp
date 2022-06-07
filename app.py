@@ -47,33 +47,76 @@ st.title("Neural Network to simulate 2-D measurements")
 
 st.sidebar.write("step0a: Project name (working folder)")
 wdirin = st.sidebar.text_input(
-    label="if not specified, filename is used for foldername", value=None
+    label="if not specified, filename will be used for foldername", value=""
 )
+studylist = os.listdir("./study")
+studylist.insert(0, "")
+studylist = [s for s in studylist if not s.startswith(".")]
+wdirin2 = st.sidebar.selectbox("Or, to revisit past study, choose folder", studylist)
+# wdir: working folder name
+# wdirin: input folder name, by text_input for creating new folder
+# wdirin2: input folder name, by selectbox for revisit
+# inputf: uploaded file object.
+# input_file: input file name. same as inputf.name, but required for dealing revisit case.
+
+# there will be 3 cases
+# 1) wdirin not given, inputf uploaded: inputf becomes working folder and inputfile, copy of inputfile will be saved.
+# 2) wdirin given, inputf uploaded: wdirin becomes working folder and inputf becomes inputfile, copy of inputfile will be save.
+# 3) wdirin2 given: wdirin2 becomes working folder and NNsetting["Inputfile"] becomes inputfile
+
+# settings of inputf and wdir begins
+if (
+    wdirin2 != ""
+):  # case 3 when wdirin2 is given, string in wdirin2 becomes wdirin and wdir
+    wdirin = wdirin2
+
 st.sidebar.write(" ")
-st.sidebar.write("step0b: upload teacher data csv:")
+st.sidebar.write("step0b: upload train data in csv format:")
 inputf = st.sidebar.file_uploader(label="csv!", type=["csv"])
+input_file = None
+if inputf:
+    if wdirin != "":  # case 1
+        wdir = wdirin
+    if wdirin == "":  # case 2
+        wdirin = inputf.name.split(".csv")[0]
+        wdir = wdirin
+    wdir = os.path.join("study", wdir)
+    dfraw = pd.read_csv(inputf)
+    st.write("Working directory:  ", wdir)
+    input_file = inputf.name
+
+
 if inputf is None:
-    inputf = st.sidebar.text_input(
-        label="Or specify name of teacher data csv.\nWrite 'train_df.csv' to use existing work",
-        value="",
-    )
-    inputf = wdirin + "/" + inputf
-    if inputf == wdirin + "/":
-        inputf = None
-st.write("input: ", inputf)
+    if wdirin2 != "":  # case 3
+        wdir = wdirin2
+        wdir = os.path.join("study", wdir)
+        path_setting = os.path.join(wdir, "NNsetting.json")
+        if exists(path_setting):
+            with open(path_setting) as f:
+                NNsetting = json.load(f)
+        inputf = NNsetting["Inputfile"]
+        # inputf = os.path.join(wdir, inputf)
+        # dfraw = pd.read_csv(inputf)
+        input_file = inputf
+
+        st.write("Working directory:  ", wdir)
+# settings of inputf finishes
+
+st.write("Input file:  ", input_file)
 st.header("STEP1: data_preparation")
 
-if inputf is not None:
-    if wdirin == "None":
-        wdir = inputf.name.split(".csv")[0]
-    else:
-        wdir = wdirin
-
-    wdir = os.path.join("study", wdir)
-
+# below, when inputf is set, tries to make wdir, and tries to save copy of data, and tris to read settings
+if inputf:
     try:
         os.mkdir(wdir)
-    except FileExistsError:  # remove old files
+    except FileExistsError:
+        pass
+    try:
+        raw_path = os.path.join(wdir, input_file)
+        dfraw.to_csv(raw_path, index=False)  # save copy of inputfile
+    # except AttributeError:
+    #     raw_path = os.path.join(wdir, input_file)
+    except NameError:
         pass
 
     path_setting = os.path.join(wdir, "NNsetting.json")
@@ -89,13 +132,13 @@ if inputf is not None:
         X1_name = None
         X2_name = None
         Y_name = None
-        n_trial_ini = 10
-        n_cores_ini = 5
+        n_trial_ini = int(10)
+        n_cores_ini = int(5)
 
 
 with st.expander("click to expand data_preparation"):
     if inputf is not None:
-        df = read_file(inputf)
+        df = read_file(raw_path)
         st.dataframe(df)
         collist = list(df.columns)
         if X1_name is not None:
@@ -143,7 +186,7 @@ with st.expander("click to expand data_preparation"):
             st.plotly_chart(fig)
 
         X2list = df[X2_name].unique()
-        if st.checkbox("X2_selecion"):
+        if st.checkbox("X2_selection"):
             st.write("unique X2-axis values are: ")
             st.write(str(X2list))
 
@@ -196,12 +239,12 @@ with st.expander("click to expand model_construction"):
 
         n_trial = st.number_input(
             label="hyperparam optimization total trial number",
-            value=n_trial_ini,
+            value=int(n_trial_ini),
             min_value=1,
         )
         n_cores = st.number_input(
             label="# of cores used parallel, make sure not to exceed total PC cores",
-            value=n_cores_ini,
+            value=int(n_cores_ini),
             min_value=1,
         )
         solve_option = st.selectbox(
@@ -216,6 +259,7 @@ with st.expander("click to expand model_construction"):
 
         if solve_option == "Stochastic Gradient Descent":
             NNsetting = dict(
+                Inputfile=input_file,
                 X1_name=X1_name,
                 X2_name=X2_name,
                 Y_name=Y_name,
@@ -230,6 +274,7 @@ with st.expander("click to expand model_construction"):
             )
         elif solve_option == "Nesterov's Accelarated Gradient":
             NNsetting = dict(
+                Inputfile=input_file,
                 X1_name=X1_name,
                 X2_name=X2_name,
                 Y_name=Y_name,
@@ -244,6 +289,7 @@ with st.expander("click to expand model_construction"):
             )
         elif solve_option == "Root Mean Square Propagation":
             NNsetting = dict(
+                Inputfile=input_file,
                 X1_name=X1_name,
                 X2_name=X2_name,
                 Y_name=Y_name,
@@ -260,6 +306,7 @@ with st.expander("click to expand model_construction"):
 
         elif solve_option == "Adaptive Momentum Optimization":
             NNsetting = dict(
+                Inputfile=input_file,
                 X1_name=X1_name,
                 X2_name=X2_name,
                 Y_name=Y_name,
@@ -355,6 +402,7 @@ with st.expander("click to expand check_learning_process"):
         ).sum()
         if check_fin < 1:
             st.write("learning finished!")
+            st.balloons()
         else:
             st.write("learning on going,", fin_trial_n, "trials finished so far")
         if "dfcheckrec_show" not in st.session_state:  # initialize
@@ -458,16 +506,19 @@ with st.expander("click to expand check_learning_process"):
             )
             st.plotly_chart(fig_study)
 
-    st.write("you can choose:")
-    continue_study = st.button("keep search with optuna")
-    if continue_study:
-        check_load_study = False
-        cmd = ["python", "learn_parent.py", wdir, "False"]
-        proc = subprocess.Popen(cmd)
-        if proc.poll() is None:
-            st.write("check learning process again")
-        else:
-            st.write("study done!")
+    st.write(" ")
+    st.write("When study is done, you can choose:")
+    sure = st.checkbox("keep search with optuna")
+    if sure:
+        continue_study = st.button("this may take time, sure to continue?")
+        if continue_study:
+            check_load_study = False
+            cmd = ["python", "learn_parent.py", wdir, "False"]
+            proc = subprocess.Popen(cmd)
+            if proc.poll() is None:
+                st.write("check learning process again")
+            else:
+                st.write("study done!")
 
     st.write("or")
     check_result = st.checkbox("check_study_result")
@@ -475,12 +526,28 @@ with st.expander("click to expand check_learning_process"):
 
         import joblib
 
-        path_study = os.path.join(wdir, "study.pkl")
-        study = joblib.load(path_study)
+        # path_study = os.path.join(wdir, "study.pkl")
+        path_study = os.path.join(wdir, "df_study_trials.csv")
+        # print(path_study)
+        # study = joblib.load(path_study)
+        dfstudy = pd.read_csv(path_study)
+        best_trial_n = dfstudy["value"].idxmax()
+        best_trial_val = dfstudy["value"].max()
         st.write(
-            "minimum loss of ", study.best_value, "achieved on the following conditions"
+            "best R2_score of", best_trial_val, "achieved on the following conditions:"
         )
-        st.write(study.best_params)
+        st.write(
+            "{  number_of_layers: ",
+            dfstudy["params_n_layer"][best_trial_n],
+            ",  number_of_nodes: ",
+            dfstudy["params_n_node"][best_trial_n],
+            ", initial_learning_rate: ",
+            dfstudy["params_lr_ini"][best_trial_n],
+            ", batch_size: ",
+            dfstudy["params_batch"][best_trial_n],
+            "}",
+        )
+        # st.write(f'{ best_trial_n = }')
 
         if st.checkbox("visualize learned curves"):
             path_train = os.path.join(wdir, "train_df.csv")
@@ -592,6 +659,17 @@ with st.expander("click to expand use_model"):
             selected_1st_axis = np.arange(
                 X1pred_min, X1pred_max + X1pred_step, X1pred_step
             )
+            X1pred_manual = st.checkbox("X1 predict list manual, separated by 'comma'")
+            if X1pred_manual:
+                selected_1st_axis = [
+                    float(x.strip())
+                    for x in st.text_input(
+                        "predict X1 values:", value=selected_1st_axis
+                    )
+                    .lstrip("[")
+                    .rstrip("]")
+                    .split()
+                ]
             st.write("X1 will be:", str(selected_1st_axis))
             st.write("")
             st.write(
@@ -600,6 +678,18 @@ with st.expander("click to expand use_model"):
             selected_2nd_axis = np.arange(
                 X2pred_min, X2pred_max + X2pred_step, X2pred_step
             )
+            X2pred_manual = st.checkbox("X2 predict list manual, separated by 'comma'")
+            if X2pred_manual:
+                new_input = st.text_input(
+                    "Predict X2 values:",
+                    value=",".join([str(x) for x in selected_2nd_axis]),
+                )
+
+                selected_2nd_axis = [
+                    float(value) for value in new_input.split(",") if len(value) > 0
+                ]
+
+                # selected_2nd_axis = [float(x.strip()) for x in st.text_input('predict X2 values:', value=selected_2nd_axis).lstrip("[").rstrip("]").split()]
             st.write("X2 will be:", str(selected_2nd_axis))
 
             dfs = []

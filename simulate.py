@@ -34,9 +34,11 @@ def main(wdir):
         NNsetting = json.load(f)
     
     #load optuna study from study.pkl
-    path_study = os.path.join(wdir, "study.pkl")
-    study = joblib.load(path_study)
-
+    # path_study = os.path.join(wdir, "study.pkl")
+    # study = joblib.load(path_study)
+    path_studyrec = os.path.join(wdir, "df_study_trials.csv")
+    dfstudy = pd.read_csv(path_studyrec)
+    best_trial_n = dfstudy["value"].idxmax()
 
     #load feature_data from pred_feature.csv
     path_pred_feat = os.path.join(wdir, "pred_feature.csv")
@@ -47,7 +49,7 @@ def main(wdir):
     normalizer = Normalization()
     normalizer.adapt(X_pred)
 
-    best_trial_n = study.best_trial.number
+    # best_trial_n = study.best_trial.number
     model_n = "modeltrial_" + str(best_trial_n)
     path_model = os.path.join(wdir, model_n)
     model = keras.models.load_model(path_model)

@@ -32,9 +32,12 @@ def main(wdir):
     normalizer.adapt(X_train)
 
     #load optuna study from study.pkl
-    path_study = os.path.join(wdir, "study.pkl")
-    study = joblib.load(path_study)
-    best_trial_n = study.best_trial.number
+    # path_study = os.path.join(wdir, "study.pkl")
+    path_studyrec = os.path.join(wdir, "df_study_trials.csv")
+    # study = joblib.load(path_study)
+    dfstudy = pd.read_csv(path_studyrec)
+    # best_trial_n = study.best_trial.number
+    best_trial_n = dfstudy["value"].idxmax()
 
     print("loading best trial_",best_trial_n)
     model_n = "modeltrial_" + str(best_trial_n)

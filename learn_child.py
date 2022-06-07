@@ -61,8 +61,8 @@ def main(wdir):
 
   def create_model(trial) -> float:        
     # below is the search hyperparam area
-    n_layer = trial.suggest_int("n_layer", 2, 5)
-    n_node = trial.suggest_int("n_node", 100, 500)
+    n_layer = trial.suggest_int("n_layer", 3, 10)
+    n_node = trial.suggest_int("n_node", 50, 200)
     act = "relu"
     lr_ini = trial.suggest_loguniform("lr_ini", 0.0005, 0.005)
     lr_val = [lr_ini, lr_ini/5]
