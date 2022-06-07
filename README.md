@@ -26,7 +26,7 @@ We recommend using conda for installing.
 download)
 2. Create the environment using:
 	```bash
-	conda create env -f environment.yml
+	conda create env -f=environment.yml
 	```
 
 3. Activate the environment (name of environment is 'mat_interp' by default, it can be changed by modifying environment.yml):
