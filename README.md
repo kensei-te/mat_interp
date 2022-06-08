@@ -14,7 +14,7 @@ For details, refer to:
 <br />
 
 ## Operating System
-It works in Linux and MacOS, but does _not_ cover Windows, to avoid complexity arising from OS-dependency.  Linux can be prepared in Windows using OS virtualization softwares.
+It works in Linux and MacOS(Intel), but does _not_ cover Windows, to avoid complexity arising from OS-dependency.  Linux can be prepared in Windows using OS virtualization softwares.  MacOS(M1) might work but not verified yet (See requirement.txt and https://github.com/apple/tensorflow_macos)
 
 Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Intel)
 <br />
@@ -44,7 +44,7 @@ download)
 The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 
-<details><summary>Ubuntu 20.04</summary><div>
+<details><summary>Ubuntu</summary><div>
 
 #### Installation
 1. update apt just in case  
@@ -228,7 +228,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 
 
-<details><summary>MacOS</summary><div>
+<details><summary>MacOS(Intel)</summary><div>
 
 #### Installation
 1. (In case it is not installed) install Homebrew, which helps installation of MySQL
