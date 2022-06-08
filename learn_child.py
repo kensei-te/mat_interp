@@ -140,7 +140,7 @@ def main(wdir):
     return rmax
 
   study_name = "optuna_NNtemp" 
-  storage = 'mysql+pymysql://' + user_name + ':' + pass_word + '@' + host_name + '/NN_interp'
+  storage = 'mysql+pymysql://' + user_name + ':' + pass_word + '@' + host_name + '/Mat_interp'
   n_trials = round(NNsetting["n_trial"] / NNsetting["n_cores"])
   sampler = TPESampler()
   pruner = optuna.pruners.SuccessiveHalvingPruner(min_resource=50, reduction_factor=2)

@@ -53,38 +53,28 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	apt-cache policy mysql-server
 	```
+	v.8.0.x or v.5.7 are recommended.
 	...suppose "8.0.22-0ubuntu0.20.04.2" is shown as candidate,
 3. simulate installation
-	```bash
-	apt-get install -s mysql-client=8.0.22-0ubuntu0.20.04.2
-	```
-	```bash
-	apt-get install -s mysql-community-server=8.0.22-0ubuntu0.20.04.2
-	```
 	```bash
 	apt-get install -s mysql-server=8.0.22-0ubuntu0.20.04.2
 	```
 	if there is no error, let's install them
 4. install
 	```bash
-	apt-get install mysql-client=8.0.22-0ubuntu0.20.04.2
+	sudo apt-get install mysql-server=8.0.22-0ubuntu0.20.04.2
 	```
-	```bash
-	apt-get install mysql-community-server=8.0.22-0ubuntu0.20.04.2
-	```
-	```bash
-	apt-get install mysql-server=8.0.22-0ubuntu0.20.04.2
-	```
+	mysql-server, mysql-client and other required packages will be installed.
 #### Setup
 1. set password for root
 	```bash
-	sudo mysql-secure_installation
+	sudo mysql_secure_installation
 	```
 	set your password
-2. keep answering yes, until the script "mysql-secure_installation" ends
-3. login to MySQL, using the password set above  
+2. keep answering yes, until the script "mysql_secure_installation" ends
+3. login to MySQL  
 	```bash
-	mysql -u root -p
+	sudo mysql
 	```
 4. create a database, called “Mat_interp”
 	```bash
@@ -92,7 +82,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```
 5. create user, username: mat_user_1, password:mat_user_1_P  
 	```bash
-	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY ‘mat_user_1_P’;
+	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY 'mat_user_1_P';
 	```
 6. allow user to modify only database named “Mat_interp”
 	```bash
@@ -106,29 +96,30 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+9. make a configuration file “.my.cnf” for mysql, where username etc is written _at home directory_.  Here we write password for "mat_user_1" who is allowed to modify only "Mat_interp" database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
 
-	- at your home directory:  
+	- @ your home directory:  
 		```bash
 		vi .my.cnf
 		```
-	[client]  
-	user = mat_user_1  
-	password = mat_user_1_P  
+		[client]  
+		user = mat_user_1  
+		password = mat_user_1_P  
 
-	- at Mat_interp folder:  
-	modify config.ini if you change username and password
+	- @ mat_interp folder:  
+	modify "config.ini" if you change username and password
 
 10. confine the accessibility of those files to the current user only
 	```bash
 	chmod 600 .my.cnf
-	chmod 600 Mat_conf
+	chmod 600 config.ini
 	```
 
 11. check if mysql is booted  
 	```bash
 	systemctl status mysqld
 	```
+	Note: in case of Ubuntu18 & MySQL5.7, "mysql" is used instead of "mysqld"
 
     - in case it is not started:  
 		```bash
@@ -199,9 +190,9 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+9. make a configuration file “.my.cnf” for mysql, where username etc is written at _home directory_.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
-	- at your home directory:  
+	- @ your home directory:  
 		```bash
 		vi .my.cnf
 		```
@@ -209,7 +200,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		user = mat_user_1  
 		password = mat_user_1_P
 
-	- at Mat_interp folder:  
+	- @ Mat_interp folder:  
 		modify config.ini if you change username and password
 
 10. confine the accessibility of those files to the current user only
@@ -336,9 +327,9 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```bash
 		sudo systemctl start mysqld
 		```
-  3. change currnt directory to Mat_interp folder:
+  3. change current directory to mat_interp folder:
 		```bash
-		cd (your_directory)/Mat_interp
+		cd (your_directory)/mat_interp
 		```
   4. start streamlit app (GUI):
 		```bash
@@ -346,6 +337,9 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```
   5. access to streamlit GUI from your web_browser:
 	http://127.0.0.1:8501/
+
+  6. (after use)  
+  	to stop, close web_browser, then type ctrl + . in terminal
 
 
 

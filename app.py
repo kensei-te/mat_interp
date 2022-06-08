@@ -43,7 +43,7 @@ except FileExistsError:
     pass
 
 
-st.title("Neural Network to simulate 2-D measurements")
+st.title("Neural Networks to simulate 2-D measurements")
 
 st.sidebar.write("step0a: Project name (working folder)")
 wdirin = st.sidebar.text_input(
@@ -377,7 +377,7 @@ with st.expander("click to expand check_learning_process"):
             + pass_word
             + "@"
             + host_name
-            + "/NN_interp"
+            + "/Mat_interp"
         )
         study = optuna.load_study(study_name=study_name, storage=storage)
         dfcheckrec = study.trials_dataframe()
@@ -432,7 +432,7 @@ with st.expander("click to expand check_learning_process"):
                 + pass_word
                 + "@"
                 + host_name
-                + "/NN_interp"
+                + "/Mat_interp"
             )
             study = optuna.load_study(study_name=study_name, storage=storage)
             dfcheckrec = study.trials_dataframe()
