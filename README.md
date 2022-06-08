@@ -335,6 +335,10 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```bash
 		streamlit run app.py
 		```
+		you may need to downgrade protobuf
+		```bash
+		pip install protobuf==3.19.0
+		```
   5. access to streamlit GUI from your web_browser:
 	http://127.0.0.1:8501/
 
