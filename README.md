@@ -14,7 +14,9 @@ For details, refer to:
 <br />
 
 ## Operating System
-It supports Linux(Ubuntu and CentOS) and MacOS, but does _not_ cover Windows, to avoid complexity arising from OS-dependency.  Linux can be prepared in Windows using OS virtualization softwares.
+It works in Linux and MacOS, but does _not_ cover Windows, to avoid complexity arising from OS-dependency.  Linux can be prepared in Windows using OS virtualization softwares.
+
+Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Intel)
 <br />
 <br />
 
@@ -24,9 +26,9 @@ It supports Linux(Ubuntu and CentOS) and MacOS, but does _not_ cover Windows, to
 We recommend using conda for installing.
 1. Download this repository (git clone or simply 
 download)
-2. Create the environment using:
+2. Create the environment using env_Ubuntu.yml for Ubuntu, env_Cent.yml for CentOS, env_Mac.yml for Mac. For instance, for Ubuntu:
 	```bash
-	conda env create -f=environment.yml
+	conda env create -f=env_Ubuntu.yml
 	```
 
 3. Activate the environment (name of environment is 'mat_interp' by default, it can be changed by modifying environment.yml):
@@ -176,7 +178,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```
 5. create user, username: mat_user_1, password:mat_user_1_P  
 	```bash
-	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY ‘mat_user_1_P’;
+	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY 'mat_user_1_P';
 	```
 6. allow user to modify only database named “Mat_interp”
 	```bash
@@ -239,7 +241,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```
 3. set path for mysql
 	```bash
-	echo 'export PATH="/usr/local/opt/mysql@8.0/bin:$pATH"' >> ~/.bashrc
+	echo 'export PATH="/usr/local/opt/mysql@8.0/bin:$PATH"' >> ~/.bashrc
 	```
 	in case you are using other shell, modify ".bashrc" to corresponding one
 4. set path for mysql
@@ -262,7 +264,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```
 5. create user, username: mat_user_1, password:mat_user_1_P  
 	```bash
-	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY ‘mat_user_1_P’;
+	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY 'mat_user_1_P';
 	```
 6. allow user to modify only database named “Mat_interp”
 	```bash
@@ -323,6 +325,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```bash
 		conda activate 'your_environment'
 		```
+		default string of 'your_environment' is 'mat_interp'
   2. if not booted yet, boot mysql (database to store learning result):
 		```bash
 		sudo systemctl start mysqld
