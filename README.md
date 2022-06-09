@@ -4,6 +4,7 @@
 [Operating System](#operating-system)  
 [How to get ready (install)](#how-to-get-ready-install)  
 [Usage](#usage)  
+[Uninstall](#uninstall)
 
 ## Overview
 This code is to perform neural networks learning of preliminary or repository experimental data, to simulate future experiments.  
@@ -26,7 +27,8 @@ Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Int
 We recommend using conda for installing.
 1. Download this repository (git clone or simply 
 download)
-2. Create the environment using env_Ubuntu.yml for Ubuntu, env_Cent.yml for CentOS, env_Mac.yml for Mac. For instance, for Ubuntu:
+2. Create the environment using env_Ubuntu.yml for Ubuntu, env_Cent.yml for CentOS, env_Mac.yml for Mac.  
+For instance, for Ubuntu:
 	```bash
 	conda env create -f=env_Ubuntu.yml
 	```
@@ -83,6 +85,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	mysql> source createdb.sql
 	mysql> exit;
 	```
+	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
 5. make a configuration file “.my.cnf” for mysql, where username etc is written _at home directory_.  Here we write password for "mat_user_1" who is allowed to modify only "Mat_interp" database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- @ your home directory:  
@@ -183,17 +186,24 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```bash
 		vi .my.cnf
 		```
+		you can use other editors as well. write the following in .my.cnf and save  
+
 		[client]  
 		user = mat_user_1  
 		password = mat_user_1_P
 
-	- @ Mat_interp folder:  
+	- @ mat_interp folder:  
 		modify config.ini if you change username and password
 
 10. confine the accessibility of those files to the current user only
+	- @ your home directory
 	```bash
 	chmod 600 .my.cnf
-	chmod 600 Mat_conf
+	```
+
+	- @ mat_interp folder:
+	```bash
+	chmod 600 config.ini
 	```
 
 11. check if mysql is booted  
@@ -358,3 +368,94 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 
 
+<br />
+<br />
+
+## Uninstall
+Below are examples, in case if you want to uninstall or re-install. 
+
+To uninstall (remove all items prepared in above installation), one needs to (1) uninstall MySQL, (2) remove conda environment, (3) delete local repository.  
+
+### Uninstall MySQL
+
+<details><summary>Ubuntu</summary><div>  
+
+1. remove MySQL server  
+	```bash
+	sudo apt purge mysql-server*  
+	```
+1. check left database files
+	```bash  
+	ls /etc/mysql  
+	sudo ls /var/lib/mysql  
+	```
+1. remove left database files
+	```bash 
+	sudo rm -r /etc/mysql /var/lib/mysql
+	```
+1. remove other dependencies packages
+	```bash 
+	sudo apt autoremove
+	```
+
+
+</div></details>
+
+<details><summary>CentOS7</summary><div>  
+
+1. list of mysql-related items installed  
+	```bash
+	pm -qa | grep -i mysql  
+	```
+
+1. remove those
+	```bash
+	sudo yum remove mysql*
+	```
+</div>
+</details>
+
+<details><summary>MacOS(Intel)</summary><div> 
+
+Here, we assume that it was installed via Homebrew
+1. remove all directries and files (ignore some of them when they do not exist)  
+	```bash
+	sudo rm -rf /usr/local/Cellar/mysql*
+	sudo rm -rf /usr/local/bin/mysql*
+	sudo rm -rf /usr/local/var/mysql*
+	sudo rm -rf /usr/local/etc/my.cnf
+	sudo rm -rf /usr/local/share/mysql*
+	sudo rm -rf /usr/local/opt/mysql*
+	sudo rm -rf /etc/my.cnf
+	sudo rm -rf /opt/homebrew/var/mysql 
+
+	rm -rf ~/Library/PreferencePanes/My*
+	sudo rm /usr/local/mysql
+	sudo rm -rf /usr/local/mysql*
+	sudo rm -rf /Library/StartupItems/MySQLCOM
+	sudo rm -rf /Library/PreferencePanes/My*
+	sudo rm -rf /Library/Receipts/mysql*
+	sudo rm -rf /Library/Receipts/MySQL*
+	sudo rm -rf /private/var/db/receipts/*mysql*
+	sudo rm /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+	```
+
+2. uninstall mysql
+	```bash
+	brew uninstall mysql
+	```
+</div>
+</details>
+
+<br />
+
+### Remove conda environment
+```bash
+conda remove -n 'your_environment' --all
+```
+default string of 'your_environment' is 'mat_interp'
+
+<br />
+
+### Delete local repository
+delete mat_interp directory from your pc
