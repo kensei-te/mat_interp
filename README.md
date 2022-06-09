@@ -78,27 +78,12 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	sudo mysql
 	```
-4. create a database, called “Mat_interp”
+4. run the SQL script file then exit:
 	```bash
-	mysql> CREATE DATABASE IF NOT EXISTS Mat_interp;
-	```
-5. create user, username: mat_user_1, password:mat_user_1_P  
-	```bash
-	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY 'mat_user_1_P';
-	```
-6. allow user to modify only database named “Mat_interp”
-	```bash
-	mysql> GRANT ALL PRIVILEGES ON Mat_interp.* TO mat_user_1@localhost;
-	```
-7. release memory
-	```bash
-	mysql> FLUSH PRIVILEGES;
-	```
-8. exit mysql_console
-	```bash
+	mysql> source createdb.sql
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written _at home directory_.  Here we write password for "mat_user_1" who is allowed to modify only "Mat_interp" database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
+5. make a configuration file “.my.cnf” for mysql, where username etc is written _at home directory_.  Here we write password for "mat_user_1" who is allowed to modify only "Mat_interp" database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- @ your home directory:  
 		```bash
