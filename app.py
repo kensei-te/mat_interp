@@ -379,7 +379,7 @@ with st.expander("click to expand check_learning_process"):
             + pass_word
             + "@"
             + host_name
-            + "/NN_interp"
+            + "/Mat_interp"
         )
         study = optuna.load_study(study_name=study_name, storage=storage)
         dfcheckrec = study.trials_dataframe()
@@ -434,7 +434,7 @@ with st.expander("click to expand check_learning_process"):
                 + pass_word
                 + "@"
                 + host_name
-                + "/NN_interp"
+                + "/Mat_interp"
             )
             study = optuna.load_study(study_name=study_name, storage=storage)
             dfcheckrec = study.trials_dataframe()
