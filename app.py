@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+import time
 
 import numpy as np
 import optuna
@@ -43,7 +44,7 @@ except FileExistsError:
     pass
 
 
-st.title("Neural Networks to simulate 2-D measurements")
+st.title("Neural Network to simulate 2-D measurements")
 
 st.sidebar.write("step0a: Project name (working folder)")
 wdirin = st.sidebar.text_input(
@@ -246,6 +247,7 @@ with st.expander("click to expand model_construction"):
             label="# of cores used parallel, make sure not to exceed total PC cores",
             value=int(n_cores_ini),
             min_value=1,
+            max_value=os.cpu_count() - 2
         )
         solve_option = st.selectbox(
             "choose solver",
@@ -343,7 +345,7 @@ with st.expander("click to expand model_construction"):
         if learn_exe:
             check_load_study = False
 
-            cmd = ["python", "learn_parent.py", wdir, "True"]
+            cmd = ["python", "./utils/learn_parent.py", wdir, "True"]
             proc = subprocess.Popen(cmd)
             if proc.poll() is None:
                 st.write("go to STEP2.5, check learning process")
@@ -377,7 +379,7 @@ with st.expander("click to expand check_learning_process"):
             + pass_word
             + "@"
             + host_name
-            + "/Mat_interp"
+            + "/NN_interp"
         )
         study = optuna.load_study(study_name=study_name, storage=storage)
         dfcheckrec = study.trials_dataframe()
@@ -432,7 +434,7 @@ with st.expander("click to expand check_learning_process"):
                 + pass_word
                 + "@"
                 + host_name
-                + "/Mat_interp"
+                + "/NN_interp"
             )
             study = optuna.load_study(study_name=study_name, storage=storage)
             dfcheckrec = study.trials_dataframe()
@@ -513,7 +515,7 @@ with st.expander("click to expand check_learning_process"):
         continue_study = st.button("this may take time, sure to continue?")
         if continue_study:
             check_load_study = False
-            cmd = ["python", "learn_parent.py", wdir, "False"]
+            cmd = ["python", "./utils/learn_parent.py", wdir, "False"]
             proc = subprocess.Popen(cmd)
             if proc.poll() is None:
                 st.write("check learning process again")
@@ -707,7 +709,8 @@ with st.expander("click to expand use_model"):
 
             simulate_b = st.button("simulate")
             if simulate_b:
-                import simulate
+                import utils
+                from utils import simulate
 
                 simulate.main(wdir)
 

@@ -24,7 +24,7 @@ host_name = config.get(mysqlconf, 'host')
 
 
 def main(wdir, renew_t):
-  path = 'learn_child.py'
+  path = './utils/learn_child.py'
   command = ["python", path, wdir]
   procs=[]
 
@@ -41,7 +41,7 @@ def main(wdir, renew_t):
   pal_n = NNsetting["n_cores"]
   renew = "True"
   study_name = "optuna_NNtemp"
-  storage = 'mysql+pymysql://' + user_name + ':' + pass_word + '@' + host_name + '/Mat_interp'
+  storage = 'mysql+pymysql://' + user_name + ':' + pass_word + '@' + host_name + '/NN_interp'
   print(" --- learning starts--- ")
   if str(renew) == str(renew_t):# if true, it deletes existing study
       try:
