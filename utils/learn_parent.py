@@ -71,7 +71,7 @@ def main(wdir, renew_t):
 
   print("study_started:", start_time)
   print("study_finished:", fin_time)
-  print("elapsed time", t_elapsed)
+  print("elapsed time:", t_elapsed)
   print("study done!")
   print("study done!")
   print("study done!")
