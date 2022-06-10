@@ -97,6 +97,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
 5. make a configuration file “.my.cnf” for mysql, where username etc is written _at home directory_.  Here we write password for "mat_user_1" who is allowed to modify only "Mat_interp" database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
 
+
 	- @ your home directory:  
 		```bash
 		vi .my.cnf
@@ -116,13 +117,13 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 11. check if mysql is booted  
 	```bash
-	systemctl status mysqld
+	systemctl status mysql
 	```
 	Note: in case of Ubuntu18 & MySQL5.7, "mysql" is used instead of "mysqld"
 
     - in case it is not started:  
 		```bash
-		sudo systemctl start mysqld
+		sudo systemctl start mysql
 		```  
     - in case you want to stop mysql:  
 		```bash
@@ -169,53 +170,37 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	mysql> set password for root@localhost=‘new_password’;
 	```
-4. create a database, called “Mat_interp”
+4. run the SQL script file then exit:
 	```bash
-	mysql> CREATE DATABASE IF NOT EXISTS Mat_interp;
-	```
-5. create user, username: mat_user_1, password:mat_user_1_P  
-	```bash
-	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY 'mat_user_1_P';
-	```
-6. allow user to modify only database named “Mat_interp”
-	```bash
-	mysql> GRANT ALL PRIVILEGES ON Mat_interp.* TO mat_user_1@localhost;
-	```
-7. release memory
-	```bash
-	mysql> FLUSH PRIVILEGES;
-	```
-8. exit mysql_console
-	```bash
+	mysql> source createdb.sql
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written at _home directory_.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
+5. make a configuration file “.my.cnf” for mysql, where username etc is written at _home directory_.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 	- @ your home directory:  
 		```bash
 		vi .my.cnf
 		```
-		you can use other editors as well. write the following in .my.cnf and save  
+	you can use other editors as well. write the following in .my.cnf and save  
 
 		[client]  
 		user = mat_user_1  
-		password = mat_user_1_P
+		password = mat_user_1_P  
+	
+	Then, confine the accessibility of the file to the current user only
+		```bash
+		chmod 600 .my.cnf
+		```
 
 	- @ mat_interp folder:  
 		modify config.ini if you change username and password
+		Then, confine the accessibility of the file to the current user only
+		```bash
+		chmod 600 config.ini
+		```
 
-10. confine the accessibility of those files to the current user only
-	- @ your home directory
-	```bash
-	chmod 600 .my.cnf
-	```
-
-	- @ mat_interp folder:
-	```bash
-	chmod 600 config.ini
-	```
-
-11. check if mysql is booted  
+6. check if mysql is booted  
 	```bash
 	systemctl status mysqld
 	```
@@ -226,7 +211,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```
     - in case you want to stop mysql:  
 		```bash
-		sudo systemctl stop mysql  
+		sudo systemctl stop mysqld  
 		```
 </div></details>
 
@@ -245,76 +230,66 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```
 3. set path for mysql
 	```bash
-	echo 'export PATH="/usr/local/opt/mysql@8.0/bin:$PATH"' >> ~/.bashrc
+	echo 'export PATH="/usr/local/opt/mysql@8.0/bin:$PATH"' >> ~/.zshrc  
+	source ~/.zshrc
 	```
-	in case you are using other shell, modify ".bashrc" to corresponding one
-4. set path for mysql
-	```bash
-	source ~/.bashrc
-	```
-	in case you are using other shell, modify ".bashrc" to corresponding one
+	in case you are using other shell, modify ".zshrc" to corresponding one
+
 #### Setup
-1. set password for root
-	% sudo mysql-secure_installation
+1. launch mysql and set password for root
+	```bash  
+	mysql.server start
+	mysql_secure_installation
+	```
 	set your password
-2. keep answering yes, until the script "mysql-secure_installation" ends
-3. change password in mysql_console (after logging in)
+2. keep answering yes, until the script "mysql_secure_installation" ends
+3. login to mysql, using the password set above 
 	```bash
-	mysql> set password for root@localhost=‘new_password’;
+	mysql -u root -p;
 	```
-4. create a database, called “Mat_interp”
+4. run the SQL script file then exit:
 	```bash
-	mysql> CREATE DATABASE IF NOT EXISTS Mat_interp;
-	```
-5. create user, username: mat_user_1, password:mat_user_1_P  
-	```bash
-	mysql> CREATE USER IF NOT EXISTS mat_user_1@localhost IDENTIFIED BY 'mat_user_1_P';
-	```
-6. allow user to modify only database named “Mat_interp”
-	```bash
-	mysql> GRANT ALL PRIVILEGES ON Mat_interp.* TO mat_user_1@localhost;
-	```
-7. release memory
-	```bash
-	mysql> FLUSH PRIVILEGES;
-	```
-8. exit mysql_console
-	```bash
+	mysql> source createdb.sql
 	mysql> exit;
 	```
-9. make a configuration file “.my.cnf” for mysql, where username etc is written at home folder.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
+5. make a configuration file “.my.cnf” for mysql, where username etc is written at _home directory_.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
 
-	- at your home directory:  
+	- @ your home directory:  
 		```bash
 		vi .my.cnf
 		```
+	you can use other editors as well. write the following in .my.cnf and save  
+
 		[client]  
 		user = mat_user_1  
-		password = mat_user_1_P
+		password = mat_user_1_P  
+	
+	Then, confine the accessibility of the file to the current user only
+		```bash
+		chmod 600 .my.cnf
+		```
 
-	- at Mat_interp folder:  
+	- @ mat_interp folder:  
 		modify config.ini if you change username and password
+		Then, confine the accessibility of the file to the current user only
+		```bash
+		chmod 600 config.ini
+		```
 
-10. confine the accessibility of those files to the current user only
+6. check if mysql server is booted  
 	```bash
-	chmod 600 .my.cnf
-	chmod 600 Mat_conf
-	```
-
-11. check if mysql is booted  
-	```bash
-	systemctl status mysqld
+	mysql.server status
 	```
 
     - in case it is not started:  
 		```bash
-		sudo systemctl start mysqld
+		mysql.server start
 		```
-    - in case you want to stop mysql:  
+    - in case you want to stop mysql server:  
 		```bash
-		sudo systemctl stop mysql  
+		mysql.server stop  
 		```
-
 </div></details>
 
 
@@ -331,9 +306,18 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```
 		default string of 'your_environment' is 'mat_interp'
   2. if not booted yet, boot mysql (database to store learning result):
-		```bash
-		sudo systemctl start mysqld
-		```
+		- Ubuntu:
+			```bash
+			sudo systemctl start mysqld
+			```
+		- CentOS7
+			```bash
+			sudo systemctl start mysql
+			```
+		- MacOS(Intel)
+			```bash
+			mysql.server start
+			```		
   3. change current directory to mat_interp folder:
 		```bash
 		cd (your_directory)/mat_interp
@@ -342,7 +326,8 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```bash
 		streamlit run app.py
 		```
-		you may need to downgrade protobuf
+		it may take time to launch in the very first time  
+		Ubuntu users may need to downgrade protobuf
 		```bash
 		pip install protobuf==3.19.0
 		```
@@ -357,7 +342,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 ### Use
   1. prepare csv file of your experimental data
   1. enter working folder name
-  1. upload the csv file
+  1. upload the csv file by either drag&drop or "Browse files" button
   1. here we let machine learn Y(X1, X2)  where Y is target value, X1 and X2 are features (experimental scanning axes).  choose X1, X2, Y column names
   1. in case you want to check data, check visualize data
   2. choose number of total trials, number of parallel workers, and learning algorithm.
