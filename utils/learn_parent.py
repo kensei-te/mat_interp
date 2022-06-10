@@ -3,6 +3,7 @@ import subprocess
 import tensorflow as tf
 import os
 import time
+import datetime as dt
 import json
 import optuna
 import joblib
@@ -64,8 +65,13 @@ def main(wdir, renew_t):
   joblib.dump(study, path_study)
   fin_time = time.strftime('%Y/%m/%d %H:%M:%S')
 
+  t_start = dt.datetime.strptime(start_time, '%H:%M:%S')
+  t_fin = dt.datetime.strptime(fin_time, '%H:%M:%S')
+  t_elapsed = t_fin - t_start
+
   print("study_started:", start_time)
   print("study_finished:", fin_time)
+  print("elapsed time", t_elapsed)
   print("study done!")
   print("study done!")
   print("study done!")
