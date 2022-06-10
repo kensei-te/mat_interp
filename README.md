@@ -27,11 +27,20 @@ Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Int
 We recommend using conda for installing.
 1. Download this repository (git clone or simply 
 download)
-2. Create the environment using env_Ubuntu.yml for Ubuntu, env_Cent.yml for CentOS, env_Mac.yml for Mac.  
-For instance, for Ubuntu:
+2. Create the environment using env_***.yml  
+	For Ubuntu:
 	```bash
 	conda env create -f=env_Ubuntu.yml
 	```
+	For CentOS7:  
+	```bash
+	conda env create -f=env_CentOS.yml
+	```
+	For MacOS(Intel):  
+	```bash
+	conda env create -f=env_mac.yml
+	```
+
 
 3. Activate the environment (name of environment is 'mat_interp' by default, it can be changed by modifying environment.yml):
 	```bash
