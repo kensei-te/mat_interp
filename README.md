@@ -228,12 +228,15 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	brew install mysql@8.0
 	```
+
+<!--
 3. set path for mysql
 	```bash
 	echo 'export PATH="/usr/local/opt/mysql@8.0/bin:$PATH"' >> ~/.zshrc  
 	source ~/.zshrc
 	```
 	in case you are using other shell, modify ".zshrc" to corresponding one
+-->
 
 #### Setup
 1. launch mysql and set password for root
@@ -374,12 +377,9 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 1. stop(if running) and remove MySQL server  
 	```bash
 	sudo systemctl stop mysql
-	sudo apt purge mysql-server*  
-	```
-1. check left database files
-	```bash  
-	ls /etc/mysql  
-	sudo ls /var/lib/mysql  
+	sudo apt remove --purge mysql-server
+	sudo apt remove --purge mysql-client
+	sudo apt remove --purge mysql-common
 	```
 1. remove left database files
 	```bash 
@@ -387,7 +387,7 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 	```
 1. remove other dependencies packages
 	```bash 
-	sudo apt autoremove
+	sudo apt autoremove --purge
 	sudo rm -rf ~/.my.cnf
 	```
 </div></details>
@@ -432,10 +432,6 @@ Here, we assume that it was installed via Homebrew
 3. make sure if anything is left
 	```bash
 	brew doctor
-	```
-	remove them
-	```bash
-	brew cleanup
 	```
 
 </div>
