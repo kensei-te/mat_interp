@@ -404,6 +404,7 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 	```bash
 	sudo systemctl stop mysqld
 	sudo yum remove mysql*
+	sudo rm -rf /var/lib/mysql
 	sudo rm -rf ~/.my.cnf
 	```
 </div>
