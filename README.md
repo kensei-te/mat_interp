@@ -245,7 +245,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 2. keep answering yes, until the script "mysql_secure_installation" ends
 3. login to mysql, using the password set above 
 	```bash
-	mysql -u root -p;
+	mysql -u root -p
 	```
 4. run the SQL script file then exit:
 	```bash
@@ -269,7 +269,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	chmod 600 ~/.my.cnf  
 	```  
 
-	modify config.ini if you change username and password
+	modify config.ini in mat_interp folder if you change username and password
 	
 	then, confine the accessibility of the file to the current user only:
 	```bash
@@ -371,8 +371,9 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 
 <details><summary>Ubuntu</summary><div>  
 
-1. remove MySQL server  
+1. stop(if running) and remove MySQL server  
 	```bash
+	sudo systemctl stop mysql
 	sudo apt purge mysql-server*  
 	```
 1. check left database files
@@ -387,10 +388,10 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 1. remove other dependencies packages
 	```bash 
 	sudo apt autoremove
+	sudo rm -rf ~/.my.cnf
 	```
-
-
 </div></details>
+
 
 <details><summary>CentOS7</summary><div>  
 
@@ -399,22 +400,25 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 	pm -qa | grep -i mysql  
 	```
 
-1. remove those
+1. stop mysql server(if running) and remove those
 	```bash
+	sudo systemctl stop mysqld
 	sudo yum remove mysql*
+	sudo rm -rf ~/.my.cnf
 	```
 </div>
 </details>
 
+
 <details><summary>MacOS(Intel)</summary><div> 
 
 Here, we assume that it was installed via Homebrew
-1. uninstall mysql
+1. stop mysql server(if running) and uninstall mysql
 	```bash
+	mysql.server stop
 	brew uninstall mysql
 	```
 	
-
 2. remove all directries and files (ignore some of them when they do not exist)  
 	```bash
 	sudo rm -rf /usr/local/Cellar/mysql*
@@ -441,9 +445,9 @@ Here, we assume that it was installed via Homebrew
 
 ### Remove conda environment
 ```bash
-conda remove -n 'your_environment' --all
+conda remove -n mat_interp --all
 ```
-default string of 'your_environment' is 'mat_interp'
+default name of the environment is 'mat_interp'
 
 <br />
 
