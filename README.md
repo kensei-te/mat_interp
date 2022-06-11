@@ -253,29 +253,28 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	mysql> exit;
 	```
 	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
-5. make a configuration file “.my.cnf” for mysql, where username etc is written at _home directory_.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.  
 
-	- @ your home directory:  
-		```bash
-		vi .my.cnf
-		```
-	you can use other editors as well. write the following in .my.cnf and save  
+	```bash  
+	vi ~/.my.cnf  
+	```  
+	you can use other editors as well. add(write) the following to .my.cnf and save  
 
-		[client]  
-		user = mat_user_1  
-		password = mat_user_1_P  
+	[client]  
+	user = mat_user_1  
+	password = mat_user_1_P  
 	
-	Then, confine the accessibility of the file to the current user only
-		```bash
-		chmod 600 .my.cnf
-		```
+	Then, confine the accessibility of the file to the current user only  
+	```bash  
+	chmod 600 ~/.my.cnf  
+	```  
 
-	- @ mat_interp folder:  
-		modify config.ini if you change username and password
-		Then, confine the accessibility of the file to the current user only
-		```bash
-		chmod 600 config.ini
-		```
+	modify config.ini if you change username and password
+	
+	then, confine the accessibility of the file to the current user only:
+	```bash
+	chmod 600 config.ini
+	```
 
 6. check if mysql server is booted  
 	```bash
@@ -300,20 +299,22 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 ## Usage
 ### Launch app
-  1. in case you have environment, activate the environment
+  1. in case you have environment, activate the environment (default is 'mat_interp')
 		```bash
-		conda activate 'your_environment'
+		conda activate mat_interp
 		```
-		default string of 'your_environment' is 'mat_interp'
   2. if not booted yet, boot mysql (database to store learning result):
+	
 		- Ubuntu:
 			```bash
 			sudo systemctl start mysqld
-			```
-		- CentOS7
+			```  
+
+		- CentOS7  
 			```bash
 			sudo systemctl start mysql
-			```
+			```  
+
 		- MacOS(Intel)
 			```bash
 			mysql.server start
@@ -357,13 +358,9 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
   3.  download csv of simulated data
 
 
-  
-
-
-
-
 <br />
 <br />
+
 
 ## Uninstall
 Below are examples, in case if you want to uninstall or re-install. 
@@ -412,7 +409,13 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 <details><summary>MacOS(Intel)</summary><div> 
 
 Here, we assume that it was installed via Homebrew
-1. remove all directries and files (ignore some of them when they do not exist)  
+1. uninstall mysql
+	```bash
+	brew uninstall mysql
+	```
+	
+
+2. remove all directries and files (ignore some of them when they do not exist)  
 	```bash
 	sudo rm -rf /usr/local/Cellar/mysql*
 	sudo rm -rf /usr/local/bin/mysql*
@@ -420,24 +423,17 @@ Here, we assume that it was installed via Homebrew
 	sudo rm -rf /usr/local/etc/my.cnf
 	sudo rm -rf /usr/local/share/mysql*
 	sudo rm -rf /usr/local/opt/mysql*
-	sudo rm -rf /etc/my.cnf
-	sudo rm -rf /opt/homebrew/var/mysql 
-
-	rm -rf ~/Library/PreferencePanes/My*
-	sudo rm /usr/local/mysql
-	sudo rm -rf /usr/local/mysql*
-	sudo rm -rf /Library/StartupItems/MySQLCOM
-	sudo rm -rf /Library/PreferencePanes/My*
-	sudo rm -rf /Library/Receipts/mysql*
-	sudo rm -rf /Library/Receipts/MySQL*
-	sudo rm -rf /private/var/db/receipts/*mysql*
-	sudo rm /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+	sudo rm -rf ~/.my.cnf
 	```
-
-2. uninstall mysql
+3. make sure if anything is left
 	```bash
-	brew uninstall mysql
+	brew doctor
 	```
+	remove them
+	```bash
+	brew cleanup
+	```
+
 </div>
 </details>
 
