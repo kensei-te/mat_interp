@@ -344,7 +344,9 @@ with st.expander("click to expand model_construction"):
         # check_b = st.button("check if learning finished")
         if learn_exe:
             check_load_study = False
-
+            if "trials_fin" not in st.session_state:  # initialize
+                st.session_state["trials_fin"] = 0
+            st.session_state["trials_fin"] = 0
             cmd = ["python", "./utils/learn_parent.py", wdir, "True"]
             proc = subprocess.Popen(cmd)
             if proc.poll() is None:
@@ -369,6 +371,8 @@ with st.expander("click to expand check_learning_process"):
         st.session_state["rangel"] = range_l
 
     check_hist = st.button("check/update record")
+    if "trials_fin" not in st.session_state:  # initialize
+        st.session_state["trials_fin"] = 0
 
     if check_hist:
         study_name = "optuna_NNtemp"
@@ -404,7 +408,12 @@ with st.expander("click to expand check_learning_process"):
         ).sum()
         if check_fin < 1:
             st.write("learning finished!")
+            st.session_state["trials_fin"] = 1
             st.balloons()
+            import utils
+            from utils import load_study
+            load_study.main(wdir)
+
         else:
             st.write("learning on going,", fin_trial_n, "trials finished so far")
         if "dfcheckrec_show" not in st.session_state:  # initialize
@@ -508,90 +517,97 @@ with st.expander("click to expand check_learning_process"):
             )
             st.plotly_chart(fig_study)
 
-    st.write(" ")
-    st.write("When study is done, you can choose:")
-    sure = st.checkbox("keep search with optuna")
-    if sure:
-        continue_study = st.button("this may take time, sure to continue?")
-        if continue_study:
-            check_load_study = False
-            cmd = ["python", "./utils/learn_parent.py", wdir, "False"]
-            proc = subprocess.Popen(cmd)
-            if proc.poll() is None:
-                st.write("check learning process again")
-            else:
-                st.write("study done!")
 
-    st.write("or")
-    check_result = st.checkbox("check_study_result")
-    if check_result:
+    if st.session_state["trials_fin"] == 0:
+        st.write("learning has not finished yet")
+        pass
+    elif st.session_state["trials_fin"] == 1:           
+        st.write(" ")
+        st.write("learning finished!")
+        st.write("When study is done, you can choose:")
+        sure = st.checkbox("keep search with optuna")
+        if sure:
+            continue_study = st.button("this may take time, sure to continue?")
+            if continue_study:
+                check_load_study = False
+                st.session_state["trials_fin"] = 0
+                cmd = ["python", "./utils/learn_parent.py", wdir, "False"]
+                proc = subprocess.Popen(cmd)
+                if proc.poll() is None:
+                    st.write("check learning process again")
+                else:
+                    st.write("study done!")
 
-        import joblib
+        st.write("or")
+        check_result = st.checkbox("check_learned_result")
+        if check_result:
 
-        # path_study = os.path.join(wdir, "study.pkl")
-        path_study = os.path.join(wdir, "df_study_trials.csv")
-        # print(path_study)
-        # study = joblib.load(path_study)
-        dfstudy = pd.read_csv(path_study)
-        best_trial_n = dfstudy["value"].idxmax()
-        best_trial_val = dfstudy["value"].max()
-        st.write(
-            "best R2_score of", best_trial_val, "achieved on the following conditions:"
-        )
-        st.write(
-            "{  number_of_layers: ",
-            dfstudy["params_n_layer"][best_trial_n],
-            ",  number_of_nodes: ",
-            dfstudy["params_n_node"][best_trial_n],
-            ", initial_learning_rate: ",
-            dfstudy["params_lr_ini"][best_trial_n],
-            ", batch_size: ",
-            dfstudy["params_batch"][best_trial_n],
-            "}",
-        )
-        # st.write(f'{ best_trial_n = }')
+            import joblib
 
-        if st.checkbox("visualize learned curves"):
-            path_train = os.path.join(wdir, "train_df.csv")
-            path_fitted = os.path.join(wdir, "df_fitted.csv")
-            train_df = pd.read_csv(path_train)
-            df_fitted = pd.read_csv(path_fitted)
-            N_COLORS = len(train_df[NNsetting["X2_name"]].unique())
-            colormap = sns.color_palette("gist_rainbow", N_COLORS).as_hex()
-            fig = px.line(
-                data_frame=train_df,
-                x=NNsetting["X1_name"],
-                y=NNsetting["Y_name"],
-                color=NNsetting["X2_name"],
-                color_discrete_sequence=colormap,
+            # path_study = os.path.join(wdir, "study.pkl")
+            path_study = os.path.join(wdir, "df_study_trials.csv")
+            # print(path_study)
+            # study = joblib.load(path_study)
+            dfstudy = pd.read_csv(path_study)
+            best_trial_n = dfstudy["value"].idxmax()
+            best_trial_val = dfstudy["value"].max()
+            st.write(
+                "best R2_score of", best_trial_val, "achieved on the following conditions:"
             )
-            fig.add_scatter(
-                x=df_fitted[NNsetting["X1_name"]],
-                y=df_fitted[NNsetting["Y_name"]],
-                mode="markers",
-                marker=dict(color="black", symbol="circle-open"),
-                name="learned",
+            st.write(
+                "{  number_of_layers: ",
+                dfstudy["params_n_layer"][best_trial_n],
+                ",  number_of_nodes: ",
+                dfstudy["params_n_node"][best_trial_n],
+                ", initial_learning_rate: ",
+                dfstudy["params_lr_ini"][best_trial_n],
+                ", batch_size: ",
+                dfstudy["params_batch"][best_trial_n],
+                "}",
             )
-            st.plotly_chart(fig)
+            # st.write(f'{ best_trial_n = }')
 
-            ytrain = train_df[NNsetting["Y_name"]]
-            yfit = df_fitted[NNsetting["Y_name"]]
+            if st.checkbox("visualize learned curves"):
+                path_train = os.path.join(wdir, "train_df.csv")
+                path_fitted = os.path.join(wdir, "df_fitted.csv")
+                train_df = pd.read_csv(path_train)
+                df_fitted = pd.read_csv(path_fitted)
+                N_COLORS = len(train_df[NNsetting["X2_name"]].unique())
+                colormap = sns.color_palette("gist_rainbow", N_COLORS).as_hex()
+                fig = px.line(
+                    data_frame=train_df,
+                    x=NNsetting["X1_name"],
+                    y=NNsetting["Y_name"],
+                    color=NNsetting["X2_name"],
+                    color_discrete_sequence=colormap,
+                )
+                fig.add_scatter(
+                    x=df_fitted[NNsetting["X1_name"]],
+                    y=df_fitted[NNsetting["Y_name"]],
+                    mode="markers",
+                    marker=dict(color="black", symbol="circle-open"),
+                    name="learned",
+                )
+                st.plotly_chart(fig)
 
-        if st.checkbox("image plot"):
-            path_fitted = os.path.join(wdir, "df_fitted.csv")
-            df_fitted = pd.read_csv(path_fitted)
-            fitdata = go.Heatmap(
-                z=df_fitted[NNsetting["Y_name"]].T,
-                x=df_fitted[NNsetting["X1_name"]],
-                y=df_fitted[NNsetting["X2_name"]],
-            )
-            layoutim = go.Layout(
-                title="image plot of fitted data",
-                xaxis=dict(ticks=""),
-                yaxis=dict(ticks="", nticks=0, scaleanchor="x"),
-            )
-            figim = go.Figure(data=fitdata, layout=layoutim)
-            st.plotly_chart(figim)
+                ytrain = train_df[NNsetting["Y_name"]]
+                yfit = df_fitted[NNsetting["Y_name"]]
+
+            if st.checkbox("image plot"):
+                path_fitted = os.path.join(wdir, "df_fitted.csv")
+                df_fitted = pd.read_csv(path_fitted)
+                fitdata = go.Heatmap(
+                    z=df_fitted[NNsetting["Y_name"]].T,
+                    x=df_fitted[NNsetting["X1_name"]],
+                    y=df_fitted[NNsetting["X2_name"]],
+                )
+                layoutim = go.Layout(
+                    title="image plot of fitted data",
+                    xaxis=dict(ticks=""),
+                    yaxis=dict(ticks="", nticks=0, scaleanchor="x"),
+                )
+                figim = go.Figure(data=fitdata, layout=layoutim)
+                st.plotly_chart(figim)
 
 
 st.header("STEP3: use_model")

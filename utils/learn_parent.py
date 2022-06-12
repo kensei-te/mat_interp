@@ -65,8 +65,8 @@ def main(wdir, renew_t):
   joblib.dump(study, path_study)
   fin_time = time.strftime('%Y/%m/%d %H:%M:%S')
 
-  t_start = dt.datetime.strptime(start_time, '%H:%M:%S')
-  t_fin = dt.datetime.strptime(fin_time, '%H:%M:%S')
+  t_start = dt.datetime.strptime(start_time, '%Y/%m/%d %H:%M:%S')
+  t_fin = dt.datetime.strptime(fin_time, '%Y/%m/%d %H:%M:%S')
   t_elapsed = t_fin - t_start
 
   print("study_started:", start_time)
@@ -75,8 +75,8 @@ def main(wdir, renew_t):
   print("study done!")
   print("study done!")
   print("study done!")
-  import load_study
-  load_study.main(wdir)
+  # import load_study
+  # load_study.main(wdir)
 
 
     

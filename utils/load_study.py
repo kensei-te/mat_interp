@@ -69,7 +69,8 @@ def main(wdir):
     K.clear_session()
     print("load_study done", time.strftime('%Y/%m/%d %H:%M:%S'))
 
-    import clear_temporary
+    import utils
+    from utils import clear_temporary
     clear_temporary.main(wdir)
 
 if __name__ == '__main__':
