@@ -98,7 +98,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	mysql> exit;
 	```
 	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
-5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.  
+5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  
 
 	```bash  
 	vi ~/.my.cnf  
@@ -120,6 +120,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	chmod 600 config.ini
 	```
+	From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 6. check if mysql is booted  
 	```bash
@@ -180,7 +181,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	mysql> exit;
 	```
 	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
-5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.  
+5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.
 
 	```bash  
 	vi ~/.my.cnf  
@@ -202,6 +203,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	chmod 600 config.ini
 	```
+	From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.  
 
 6. check if mysql is booted  
 	```bash
@@ -259,7 +261,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	mysql> exit;
 	```
 	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
-5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.  
+5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  
 
 	```bash  
 	vi ~/.my.cnf  
@@ -281,6 +283,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	chmod 600 config.ini
 	```
+	From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
 
 6. check if mysql server is booted  
 	```bash
