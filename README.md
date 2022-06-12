@@ -26,7 +26,10 @@ Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Int
 ### 1. Scripts and Environment Setup
 We recommend using conda for installing.
 1. Download this repository (git clone or simply 
-download)
+download), and move to the directory (default name: 'mat_interp')
+	```bash
+	cd (your_directory)/mat_interp
+	```
 2. Create the environment using env_***.yml  
 	For Ubuntu:
 	```bash
