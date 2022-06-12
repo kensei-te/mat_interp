@@ -358,7 +358,6 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```bash  
 		mysql.server stop  
 		```  
-
 	to deactivate virtual environment (named "mat_interp"),  
 		```bash  
 		conda deactivate mat_interp  
