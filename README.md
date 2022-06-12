@@ -346,23 +346,23 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
   6. (after use)  
   	to stop streamlit, close web_browser, then type "ctrl" + "." in terminal.  
-	to stop mysql, for Ubuntu:
-		```bash
-		sudo systemctl stop mysql
+	to stop mysql, for Ubuntu:  
+		```bash  
+		sudo systemctl stop mysql  
 		```  
-		for CentOS
-		```bash
-		sudo systemctl stop mysqld
+		for CentOS  
+		```bash  
+		sudo systemctl stop mysqld  
 		```  
-		for MacOS(Intel)
-		```bash
-		mysql.server stop
+		for MacOS(Intel)  
+		```bash  
+		mysql.server stop  
 		```  
 
-	to deactivate virtual environment (named "mat_interp"),
-		```bash
-		conda deactivate mat_interp
-		```
+	to deactivate virtual environment (named "mat_interp"),  
+		```bash  
+		conda deactivate mat_interp  
+		```  
 
 
 
