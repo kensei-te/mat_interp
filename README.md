@@ -381,7 +381,7 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 	sudo apt remove --purge mysql-client
 	sudo apt remove --purge mysql-common
 	```
-1. remove left database files
+1. remove left database files(if they still exist)
 	```bash 
 	sudo rm -r /etc/mysql /var/lib/mysql
 	```
