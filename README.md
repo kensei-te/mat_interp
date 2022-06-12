@@ -345,7 +345,24 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	http://127.0.0.1:8501/
 
   6. (after use)  
-  	to stop, close web_browser, then type ctrl + . in terminal
+  	to stop streamlit, close web_browser, then type "ctrl" + "." in terminal.  
+	to stop mysql, for Ubuntu:
+		```bash
+		sudo systemctl stop mysql
+		```
+		for CentOS
+		```bash
+		sudo systemctl stop mysqld
+		```  
+		for MacOS(Intel)
+		```bash
+		mysql.server stop
+		```
+	to deactivate virtual environment (named "mat_interp"),
+		```bash
+		conda deactivate mat_interp
+		```
+
 
 
 
