@@ -349,7 +349,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	to stop mysql, for Ubuntu:
 		```bash
 		sudo systemctl stop mysql
-		```
+		```  
 		for CentOS
 		```bash
 		sudo systemctl stop mysqld
@@ -357,7 +357,8 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		for MacOS(Intel)
 		```bash
 		mysql.server stop
-		```
+		```  
+
 	to deactivate virtual environment (named "mat_interp"),
 		```bash
 		conda deactivate mat_interp
