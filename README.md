@@ -37,11 +37,11 @@ download), and move to the directory (default name: 'mat_interp')
 	```
 	For CentOS7:  
 	```bash
-	conda env create -f=env_CentOS.yml
+	conda env create -f=env_CentOS7.yml
 	```
 	For MacOS(Intel):  
 	```bash
-	conda env create -f=env_mac.yml
+	conda env create -f=env_Mac.yml
 	```
 
 
