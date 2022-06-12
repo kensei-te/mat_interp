@@ -69,7 +69,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	```bash
 	apt-cache policy mysql-server
 	```
-	v.8.0.x or v.5.7 are recommended.
+	v.8.0.x or v.5.7.x are recommended.  
 	...suppose "8.0.22-0ubuntu0.20.04.2" is shown as candidate,
 3. simulate installation
 	```bash
@@ -98,32 +98,33 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	mysql> exit;
 	```
 	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
-5. make a configuration file “.my.cnf” for mysql, where username etc is written _at home directory_.  Here we write password for "mat_user_1" who is allowed to modify only "Mat_interp" database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.
+5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.  
 
+	```bash  
+	vi ~/.my.cnf  
+	```  
+	you can use other editors as well. add(write) the following to .my.cnf and save  
 
-	- @ your home directory:  
-		```bash
-		vi .my.cnf
-		```
-		[client]  
-		user = mat_user_1  
-		password = mat_user_1_P  
+	[client]  
+	user = mat_user_1  
+	password = mat_user_1_P  
+	
+	Then, confine the accessibility of the file to the current user only  
+	```bash  
+	chmod 600 ~/.my.cnf  
+	```  
 
-	- @ mat_interp folder:  
-	modify "config.ini" if you change username and password
-
-10. confine the accessibility of those files to the current user only
+	modify config.ini in mat_interp folder if you change username and password
+	
+	then, confine the accessibility of the file to the current user only:
 	```bash
-	chmod 600 .my.cnf
 	chmod 600 config.ini
 	```
 
-11. check if mysql is booted  
+6. check if mysql is booted  
 	```bash
 	systemctl status mysql
 	```
-	Note: in case of Ubuntu18 & MySQL5.7, "mysql" is used instead of "mysqld"
-
     - in case it is not started:  
 		```bash
 		sudo systemctl start mysql
@@ -179,29 +180,28 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	mysql> exit;
 	```
 	The script will make a database named "Mat_interp", and make a user "mat_user_1" with password, and give a privilege to this user to modify the database Mat_interp. You can modify them by editing createdb.sql.
-5. make a configuration file “.my.cnf” for mysql, where username etc is written at _home directory_.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, config.ini will be referenced from executing app.py, and you do not need to enter password each time.  You can modify the setting to make things safer.
+5. edit a configuration file ".my.cnf" for mysql.  Here we write password for user1 who is allowed to modify only Mat_interp database.  From now on, "config.ini" will be referenced from executing "app.py", and you do not need to enter password each time.  You can modify the setting to make things safer.  
 
-	- @ your home directory:  
-		```bash
-		vi .my.cnf
-		```
-	you can use other editors as well. write the following in .my.cnf and save  
+	```bash  
+	vi ~/.my.cnf  
+	```  
+	you can use other editors as well. add(write) the following to .my.cnf and save  
 
-		[client]  
-		user = mat_user_1  
-		password = mat_user_1_P  
+	[client]  
+	user = mat_user_1  
+	password = mat_user_1_P  
 	
-	Then, confine the accessibility of the file to the current user only
-		```bash
-		chmod 600 .my.cnf
-		```
+	Then, confine the accessibility of the file to the current user only  
+	```bash  
+	chmod 600 ~/.my.cnf  
+	```  
 
-	- @ mat_interp folder:  
-		modify config.ini if you change username and password
-		Then, confine the accessibility of the file to the current user only
-		```bash
-		chmod 600 config.ini
-		```
+	modify config.ini in mat_interp folder if you change username and password
+	
+	then, confine the accessibility of the file to the current user only:
+	```bash
+	chmod 600 config.ini
+	```
 
 6. check if mysql is booted  
 	```bash
