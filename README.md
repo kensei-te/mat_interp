@@ -147,33 +147,42 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 		```
 	- remove MariDB-related things  
 		```bash
-		% yum remove mariadb-libs
+		sudo yum remove mariadb-libs
 		```
 2.  enable access to repository for MySQL
 	- download yum-repository, go to 
-		http://dev.mysql.com/downloads/repo/yum/
+		http://dev.mysql.com/downloads/repo/yum/  
 		and choose RPM for “Red Hat Enterprise Linux 7”  
+		(you do not need to register, you can choose "No thanks, just start my download.")
 3. install the downloaded RPM  
 	```bash
-	yum localinstall   mysql80-community-release-el7-3.noarch.rpm
+	sudo yum localinstall   mysql80-community-release-el7-6.noarch.rpm
 	```
+	modify RPM name if downloaded version is different
 4. install MySQL8.0  
 	```bash
-	yum install —enablerepo=mysql80-community mysql-community-server
+	sudo yum install —enablerepo=mysql80-community mysql-community-server
+	```  
+	in case you have GPG key issue ([Errno 14] curl#37 - "Couldn't open file /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql-2022"), try below and retry yum install:
+	```bash
+	sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
 	```
 
+
 #### Setup
-1. make sure the initial password for root  
+1. start mysql server, then check the generated initial password for root  
 	```bash
+	sudo systemctl start mysqld
 	cat /var/log/mysqld.log | grep password
 	```
-2. login to MySQL, using the initial password above  
+2. change password from initial one, using "mysql_secure_installation"
+	```bash
+	mysql_secure_installation
+	```
+	after changing password for root, keep answering yes until "All done!" appears  
+3. login to MySQL, using the password just set above  
 	```bash
 	mysql -u root -p
-	```
-3. change password in mysql_console (after logging in)
-	```bash
-	mysql> set password for root@localhost=‘new_password’;
 	```
 4. run the SQL script file then exit:
 	```bash
@@ -420,7 +429,7 @@ To uninstall (remove all items prepared in above installation), one needs to (1)
 
 1. list of mysql-related items installed  
 	```bash
-	pm -qa | grep -i mysql  
+	rpm -qa | grep -i mysql  
 	```
 
 1. stop mysql server(if running) and remove those
