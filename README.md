@@ -325,12 +325,12 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 	
 		- Ubuntu:
 			```bash
-			sudo systemctl start mysqld
+			sudo systemctl start mysql
 			```  
 
 		- CentOS7  
 			```bash
-			sudo systemctl start mysql
+			sudo systemctl start mysqld
 			```  
 
 		- MacOS(Intel)
