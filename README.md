@@ -8,7 +8,7 @@
 
 ## Overview
 This code is to perform neural networks learning of preliminary or repository experimental data, to simulate future experiments.  
-For details, refer to:
+For details, refer to: http://arxiv.org/abs/2206.10908
 
 ![gif](overview.gif)
 <br />
