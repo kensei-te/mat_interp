@@ -14,7 +14,7 @@ from genericpath import exists
 from tensorflow.keras.losses import mean_squared_error as mse
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-os.environ["NUMEXPR_MAX_THREADS"] = "16"
+# os.environ["NUMEXPR_MAX_THREADS"] = "16"
 
 # MySQL setting
 import configparser
@@ -244,7 +244,7 @@ with st.expander("click to expand model_construction"):
             min_value=1,
         )
         n_cores = st.number_input(
-            label="# of cores used parallel, make sure not to exceed total PC cores",
+            label="# of parallel workers, make sure not to exceed total PC cores",
             value=int(n_cores_ini),
             min_value=1,
             max_value=os.cpu_count() - 2
