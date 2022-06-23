@@ -15,7 +15,7 @@ For details, refer to: http://arxiv.org/abs/2206.10908
 <br />
 
 ## Operating System
-It works in Linux and MacOS(Intel), but does _not_ cover Windows, to avoid complexity arising from OS-dependency.  Linux can be prepared in Windows using OS virtualization softwares.  MacOS(M1) might work but not verified yet (See requirement.txt and https://github.com/apple/tensorflow_macos)
+The current proposed method have been tested only on Linux and MacOS (Intel) systems. We currently do not support Windows systems, however it might be possible to run using virtual machines.  MacOS(M1) might work but not verified yet (See requirement.txt and https://github.com/apple/tensorflow_macos)
 
 Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Intel)
 <br />
