@@ -180,4 +180,34 @@ def optimize_neural_net(neural_net_settings: dict):
 
         # Train the model
         history = model.fit(X_train, y_train, batch_size = batch, verbose = 0, epochs=num_epochs, callbacks = [pruner_callback, checkpoint_callback, earlystopping_callback])
+
+        # Save history
+        history_filename = f"histtrial_{trial_number}.csv"
+        history_dataframe = pd.DataFrame(history.history)
+        history_dataframe.to_csv(os.path.join(working_dir, history_filename))
+
+        # Now get the best 
+        r2_maximum = max(history.history['r_squared'])
+
+        # Save the model with best weights.
+        modelname = f"modeltrial_{trial_number}"
+        model.load_weights(weight_path)
+        model.save(os.path.join(working_dir, modelname))
         
+        return r2_maximum
+
+    
+    # Now lets create an study optimizer
+    study_name = "optuna_NNtemp"
+    sampler = TPESampler()
+    pruner = optuna.pruners.SuccessiveHalvingPruner(min_resource = 50, reduction_factor=2)
+
+    study = optuna.create_study(
+        study_name = study_name,
+        sampler = sampler,
+        pruner = pruner,
+        direction = "maximize",
+    )
+    
+    study.optimize(objective, n_trials = num_trials, n_jobs=-1)
+
