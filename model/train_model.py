@@ -1,6 +1,6 @@
 import os
 import shutil
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 import numpy as np
 import optuna
@@ -10,12 +10,13 @@ from optuna.integration import TFKerasPruningCallback
 from optuna.samplers import TPESampler
 from tensorflow import keras
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
 from tensorflow.keras.losses import mean_squared_error as mse
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import SGD, Adam, RMSprop
 from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay
+from tensorflow.keras.regularizers import L1, L2
 from tensorflow_addons.metrics import RSquare
 
 
@@ -69,26 +70,42 @@ def get_batchsize_range(data_length: int) -> List[int]:
 
 
 def generate_model(
-    n_layers: int, n_nodes: int, starting_lr: float, X_train: np.array, solver: str
+    n_layers: int,
+    n_nodes: int,
+    starting_lr: float,
+    X_train: np.array,
+    solver: str,
+    regularizer: Union[str, None],
+    regularization_value: float = 0.0,
 ) -> Model:
-    """Returns a Dense Sequential Model for a given imput
+    """
+    Returns a dense sequential model for a given input.
 
     Parameters
     ----------
     n_layers : int
-        Number of layers
+        Number of layers in the model.
     n_nodes : int
-        Number of nodes
+        Number of nodes in each layer of the model.
     starting_lr : float
-        Initial learning rate
+        Initial learning rate for the model.
+    X_train : np.array
+        Training data for the model.
     solver : str
-        Solver to use
+        Solver to use for training the model. Accepted values are 'SGD', 'NAG', 'RMSprop', and 'Adam'.
+    regularizer : Union[str, None]
+        Regularization method to use for the model. Accepted values are 'l1', 'l2', and 'dropout'.
+        If None, no regularization is used.
+    regularization_value : float, optional
+        Regularization value to use. Default is 0.0.
+        If regularization chosen is "dropout" the value is the probability.
 
     Returns
     -------
     Model
-        A sequential keras model
+        A sequential Keras model.
     """
+
     # Define activation function to use
     activation = "relu"
     # Set up learning rate bondaries conditions for constant decay
@@ -98,6 +115,16 @@ def generate_model(
         "RMSprop": lambda lr: RMSprop(learning_rate=lr),
         "Adam": lambda lr: Adam(learning_rate=lr),
     }
+    # Regularizers
+    regularizers = {
+        "l1": L1(regularization_value),
+        "l2": L2(regularization_value),
+        "dropout": Dropout(regularization_value),
+    }
+    # Get regularization if is not None. Otherwise we just pass that directly...
+    if regularizer:
+        regularization_function = regularizers[regularizer]
+
     lr_values = [starting_lr, starting_lr / 5]
     border = [100]
     learning_rate_function = PiecewiseConstantDecay(border, lr_values)
@@ -111,7 +138,16 @@ def generate_model(
 
     # Now add dense layers
     for i in range(n_layers):
-        layers.append(Dense(n_nodes, activation=activation, name=f"layer{i}"))
+        layers.append(
+            Dense(
+                n_nodes,
+                activation=activation,
+                name=f"layer{i}",
+                kernel_regularizer=regularization_function,
+            )
+        )
+        if regularizer == "dropout":
+            layers.append(regularization_function)
     # Add output layer. Here we use only one layer as we are predicting a single target
     layers.append(Dense(1, name=f"output-layer"))
 
@@ -124,20 +160,44 @@ def generate_model(
     return model
 
 
-def optimize_neural_net(neural_net_settings: dict):
+def optimize_neural_net(
+    epochs: int,
+    solver: str,
+    X_train: np.array,
+    y_train: np.array,
+    num_trials: int,
+    nodes_range: Tuple[int, int],
+    layers_range: Tuple[int, int],
+    working_dir: str,
+    regularizer: Union[str, None] = None,
+    regularization_value: float = 0.0,
+):
     """
-    Function to search for a neural network's architecture and hyperparameters using Optuna.
+    Searches for the optimal architecture and hyperparameters for a neural network using Optuna.
 
     Parameters
     ----------
-    neural_net_settings: dict
-        A dictionary containing the training data and training-related parameters for the neural network. The dictionary should contain the following keys and values:
-        - 'epochs': The number of epochs to train the neural network for.
-        - 'solver': The solver to use for training the neural network.
-        - 'X_train': The training data inputs.
-        - 'y_train': The training data labels.
-        - 'num_trials': The number of trials to run for optimization.
-        - 'working_dir': The directory where the intermediate files generated during optimization will be saved.
+    epochs : int
+        Number of epochs to train the model.
+    solver : str
+        Solver to use for training the model. Accepted values are 'SGD', 'NAG', 'RMSprop', and 'Adam'.
+    X_train : np.array
+        Training data for the model.
+    y_train : np.array
+        Target data for the model.
+    num_trials : int
+        Number of trials to run for the optimization process.
+    nodes_range : Tuple[int, int]
+        Range of number of nodes to consider for each layer of the model. Usage: [min, max]
+    layers_range : Tuple[int, int]
+        Range of number of layers to consider for the model. Usage: [min, max]
+    working_dir : str
+        Directory to save intermediate results during the optimization process.
+    regularizer : Union[str, None], optional
+        Regularization method to use for the model. Accepted values are 'l1', 'l2', and 'dropout'.
+        If None, no regularization is used. Default is None.
+    regularization_value : float, optional
+        Regularization value to use. Default is 0.0. If using 'dropout' value is the probability.
 
     Returns
     -------
@@ -145,20 +205,22 @@ def optimize_neural_net(neural_net_settings: dict):
     """
 
     # Training related paramaeters to be used
-    num_epochs = neural_net_settings["epochs"]
-    solver = neural_net_settings["solver"]
-    X_train = neural_net_settings["X_train"]
-    y_train = neural_net_settings["y_train"]
+    num_epochs = epochs
+    solver = solver
+    X_train = X_train
+    y_train = y_train
     training_data_size = len(y_train)
 
     # Normalize y_train inputs to make it faster
     y_train_std = (y_train - y_train.mean()) / y_train.std()
 
     # Optimization related paramaters:
-    num_trials = neural_net_settings["num_trials"]
+    num_trials = num_trials
+    num_nodes_range = nodes_range
+    num_layers_range = layers_range
 
     # Directory. Get desired name and create if necessary
-    working_dir = neural_net_settings["working_dir"]
+    working_dir = working_dir
     os.makedirs(working_dir, exist_ok=True)
 
     def objective(trial: optuna.trial.Trial) -> float:
@@ -175,8 +237,12 @@ def optimize_neural_net(neural_net_settings: dict):
             The best R2 score achieved by the model
         """
         # Set up the Neural net archichteture search space
-        num_layers = trial.suggest_int("num_layers", 3, 10)
-        num_nodes = trial.suggest_int("num_nodes_per_layer", 50, 200)
+        num_layers = trial.suggest_int(
+            "num_layers", num_layers_range[0], num_layers_range[1]
+        )
+        num_nodes = trial.suggest_int(
+            "num_nodes_per_layer", num_nodes_range[0], num_nodes_range[1]
+        )
         starting_lr = trial.suggest_loguniform("starting_lr", 0.0005, 0.005)
 
         # Create the model
@@ -186,6 +252,8 @@ def optimize_neural_net(neural_net_settings: dict):
             starting_lr=starting_lr,
             X_train=X_train,
             solver=solver,
+            regularizer=regularizer,
+            regularization_value=regularization_value,
         )
 
         # Get the batchsize range and select as a choice
@@ -247,7 +315,6 @@ def optimize_neural_net(neural_net_settings: dict):
     study.optimize(objective, n_trials=num_trials, n_jobs=-1)
     print("Optimization Finished.")
 
-    # TODO: Have to add code to clean up bad trials and temporary files.
     best_trial_number = study.best_trial.number
     best_trial_name = f"modeltrial_{best_trial_number}"
 
