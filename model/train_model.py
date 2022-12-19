@@ -166,9 +166,9 @@ def optimize_neural_net(
     X_train: np.array,
     y_train: np.array,
     num_trials: int,
-    nodes_range: Tuple[int, int],
-    layers_range: Tuple[int, int],
     working_dir: str,
+    nodes_range: Tuple[int, int] = (50, 200),
+    layers_range: Tuple[int, int] = (3, 10),
     regularizer: Union[str, None] = None,
     regularization_value: float = 0.0,
 ):
