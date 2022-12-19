@@ -79,7 +79,7 @@ def plot_entropy_curve(
     fields_ds = [1, 3, 5]
     for field in fields_ds:
         df_plot = entropy_dataframe.query("dh == @field")
-        ax[1].plot(df_plot.t, df_plot.ds, label=rf"$mu_{0}\Delta H$ = {field} T")
+        ax[1].plot(df_plot.t, df_plot.ds, label=rf"$\mu_{0}\Delta H$ = {field} T")
 
     # Labels and what not
     ax[0].set_title(f"Magnetization Data")
