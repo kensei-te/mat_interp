@@ -119,10 +119,10 @@ def generate_model(
     regularizers = {
         "l1": L1(regularization_value),
         "l2": L2(regularization_value),
-        "dropout": Dropout(regularization_value),
     }
     # Get regularization if is not None. Otherwise we just pass that directly...
-    if regularizer:
+    regularization_function = None
+    if regularizer in ["l1", "l2"]:
         regularization_function = regularizers[regularizer]
 
     lr_values = [starting_lr, starting_lr / 5]
@@ -147,7 +147,7 @@ def generate_model(
             )
         )
         if regularizer == "dropout":
-            layers.append(regularization_function)
+            layers.append(Dropout(regularization_value))
     # Add output layer. Here we use only one layer as we are predicting a single target
     layers.append(Dense(1, name=f"output-layer"))
 
@@ -170,7 +170,7 @@ def optimize_neural_net(
     nodes_range: Tuple[int, int] = (50, 200),
     layers_range: Tuple[int, int] = (3, 10),
     regularizer: Union[str, None] = None,
-    regularization_value: float = 0.0,
+    regularization_value: Union[str, float] = 0.0,
 ):
     """
     Searches for the optimal architecture and hyperparameters for a neural network using Optuna.
@@ -198,6 +198,7 @@ def optimize_neural_net(
         If None, no regularization is used. Default is None.
     regularization_value : float, optional
         Regularization value to use. Default is 0.0. If using 'dropout' value is the probability.
+        Can be passed as 'optimize' and the value will be search within the following ranges: [0.1, 0.01, 0.001, 1e-4, 1e-5]. Only works for "l1" or "l2".
 
     Returns
     -------
@@ -245,7 +246,23 @@ def optimize_neural_net(
         )
         starting_lr = trial.suggest_loguniform("starting_lr", 0.0005, 0.005)
 
-        # Create the model
+        # Check regularization
+        if regularizer and regularization_value == "optimize":
+            if regularizer in ["l1", "l2"]:
+                reg_value = trial.suggest_categorical(
+                    "reg_value", [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 0]
+                )
+            else:
+                reg_value = trial.suggest_categorical(
+                    "drop_prob", [0.1, 0.2, 0.3, 0.4, 0.5]
+                )
+        else:
+            reg_value = regularization_value
+
+        # # Create the model
+        # print(
+        #     f"Creating nn with layers: {num_layers} and nodes: {num_nodes} starting with learning rate {starting_lr} for trial {trial.number}.... regularizaiton value is set to {reg_value}..."
+        # )
         model = generate_model(
             n_layers=num_layers,
             n_nodes=num_nodes,
@@ -253,7 +270,7 @@ def optimize_neural_net(
             X_train=X_train,
             solver=solver,
             regularizer=regularizer,
-            regularization_value=regularization_value,
+            regularization_value=reg_value,
         )
 
         # Get the batchsize range and select as a choice
