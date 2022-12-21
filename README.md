@@ -49,12 +49,22 @@ download), and move to the directory (default name: 'mat_interp')
 	```bash
 	conda activate mat_interp
 	```
-4. After this is done, follow the below procedures for setting up MySQL server (local database used to take care data of optimization process of neural networks architeture in parallel.)
 
 
+## Jupyter Notebooks  - Usage
+We provide a set of example notebooks, on how to train, compare and simulate the neural network for reproducing the results of magnetocaloric part, specifically for the case of ErCo<sub>2</sub> data.
 
+After installing the enviroment navigate to the notebooks folder, where and see the 'Simulation Visualization.ipynb'. 
 
-### 2. MySQL Installation
+There you can see the process to do calculate the entropy, generate data using a neural network model, how to search for you own network and comparison with other standard models in the scikit-learn package.
+
+> Note: In this method, there is no need for installing extra packages or services such as MySQL. However, you wont be able to interactivly check the training process and wont be able to simple drag and drop.
+
+## Setting up the Streamlit GUI - Requeriments:
+Here we write the requirements for setting up the Streamlit GUI described in the paper. Note, that few extra steps are necessary and are described below
+
+> Note: Since in the Streamlit GUI we use process based paralletization that also allows us to check the learning curves during training, follow the below procedures for setting up MySQL server
+### 1. MySQL Installation
 The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 
@@ -315,7 +325,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 <br />
 
 
-## Usage
+## Usage (Streamlit GUI)
 ### Launch app
   1. in case you have environment, activate the environment (default is 'mat_interp')
 		```bash
@@ -375,7 +385,7 @@ The procedure slightly differs between Ubuntu, CentOS, and MacOS.
 
 
 
-### Use
+### Steps for using the GUI
   1. prepare csv file of your experimental data
   1. enter working folder name
   1. upload the csv file by either drag&drop or "Browse files" button
