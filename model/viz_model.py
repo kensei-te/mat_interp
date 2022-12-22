@@ -1,10 +1,11 @@
-from typing import Callable
+from typing import List
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from mat_interp.utils.mce import calculate_entropy
+from mat_interp.utils.mce import calculate_entropy, interpolation_temperature
+from tensorflow.keras import Sequential
 
 
 def plot_entropy_curve(
@@ -20,20 +21,24 @@ def plot_entropy_curve(
     bbox_mag=(0.8, -0.15),
     bbox_ds=(0.8, -0.15),
     return_entropy: bool = False,
+    t_ranges: List[int] = None,
 ) -> None:
-    """_summary_
+    """Plots the magnetization-temperature curve and the entropy curve.
 
     Parameters
     ----------
     data : pd.DataFrame
-        _description_
+        A dataframe containing the temperature, field, and magnetization values.
     temperature_column : str
-        _description_
+        The name of the column in the dataframe with the temperature values.
     field_column : str
-        _description_
+        The name of the column in the dataframe with the field values.
     magnetization_column : str
-        _description_
-    """
+        The name of the column in the dataframe with the magnetization values.
+    sample_mass : float, optional
+        The mass of the sample in grams, by default 0.61 * 1e-3
+    unstandarize : bool, optional
+        If True, the magnetization values will be unstandarized using the mean and std of the original dataset."""
     # Set up color settings and plot aethestics
     sns.set()
     color_pallete = "husl"
@@ -54,6 +59,7 @@ def plot_entropy_curve(
         t_column=temperature_column,
         h_column=field_column,
         m_column=magnetization_column,
+        t_ranges=t_ranges,
     )
     entropy_dataframe["ds"] = entropy_dataframe["ds"].apply(np.abs)
 
@@ -79,7 +85,13 @@ def plot_entropy_curve(
     fields_ds = [1, 3, 5]
     for field in fields_ds:
         df_plot = entropy_dataframe.query("dh == @field")
-        ax[1].plot(df_plot.t, df_plot.ds, label=rf"$\mu_{0}\Delta H$ = {field} T")
+        ax[1].plot(
+            df_plot.t,
+            df_plot.ds,
+            "o-",
+            mec="black",
+            label=rf"$\mu_{0}\Delta H$ = {field} T",
+        )
 
     # Labels and what not
     ax[0].set_title(f"Magnetization Data")
@@ -98,28 +110,37 @@ def plot_entropy_curve(
 
 
 def generate_data_mce(
-    model: Callable, start: float, end: float, step: float
+    model: Sequential,
+    start: float,
+    end: float,
+    step: float,
+    t_ranges: List[int] = interpolation_temperature,
 ) -> pd.DataFrame:
-    """...
+    """Generates a dataframe with magnetization values using a model.
 
     Parameters
     ----------
-    model : Callable
-        _description_
+    model : Sequential
+        A Sequential keras Model that takes a temperature and field value as a feature and returns a magnetization value.
     start : float
-        _description_
+        The starting field value in tesla.
     end : float
-        _description_
+        The ending field value in tesla.
     step : float
-        _description_
+        The step size for the field values in tesla.
+    t_ranges : List[int], optional
+        A list of temperature values to use in the dataframe, by default uses the interpolation_temperature list for the ErCo2 measured sample. If None, temperature values will be generated from 10 to 60 K with a step size of 0.5 K.
 
     Returns
     -------
     pd.DataFrame
-        _description_
+        A dataframe with the temperature, field, and magnetization values.
     """
     fields = np.arange(start, end + step, step) * 1e4  # Go to Oe
-    temperature = np.arange(10, 60 + 0.5, 0.5)
+    if t_ranges is not None:
+        temperature = t_ranges
+    else:
+        temperature = np.arange(10, 60 + 0.5, 0.5)
 
     fields_final = [0.01 * 1e4] + list(np.round(fields, 2))
 
