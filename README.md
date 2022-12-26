@@ -15,7 +15,7 @@ For details, refer to: http://arxiv.org/abs/2206.10908
 <br />
 
 ## Operating System
-The current proposed method have been tested only on Linux and MacOS (Intel) systems. We currently do not support Windows systems, however it might be possible to run using virtual machines.  MacOS(M1) might work but not verified yet (See requirement.txt and https://github.com/apple/tensorflow_macos)
+There are two ways provided to use the code. One is via Jupyter Notebook, which runs on users own PCs or Google Colab. Another way is additional installation of Streamlit and mySQL for GUI-based use. For the latter, it has been tested only on Linux and MacOS (Intel) systems. We currently do not support Windows systems, however it might be possible to run using virtual machines.  MacOS(M1) might work but not verified yet (See requirement.txt and https://github.com/apple/tensorflow_macos)
 
 Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Intel)
 <br />
