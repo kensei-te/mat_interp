@@ -186,10 +186,7 @@ def optimize_neural_net(
     y_train : np.array
         Target data for the model.
     num_trials : int
-        Number of trials to run for the optimization process.
-    nodes_range : Tuple[int, int]
-        Range of number of nodes to consider for each layer of the model. Usage: [min, max]
-    layers_range : Tuple[int, int]
+        Number of trials to run for tllable,
         Range of number of layers to consider for the model. Usage: [min, max]
     working_dir : str
         Directory to save intermediate results during the optimization process.

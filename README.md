@@ -473,8 +473,7 @@ Here, we assume that it was installed via Homebrew
 	sudo rm -rf ~/.my.cnf
 	```
 3. make sure if anything is left
-	```bash
-	brew doctor
+	```bashS
 	```
 
 </div>

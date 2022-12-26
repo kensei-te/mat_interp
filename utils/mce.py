@@ -118,6 +118,7 @@ def calculate_entropy(
     m_column: str = "M",
     t_step: float = 0.7,
     t_ranges: List[int] = interpolation_temperature,
+    interpolate: bool = True,
 ) -> pd.DataFrame:
     """
     Calculate the magnetic entropy change from magnetization measurements.
