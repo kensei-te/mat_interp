@@ -15,7 +15,7 @@ For details, refer to: http://arxiv.org/abs/2206.10908
 <br />
 
 ## Operating System
-The current proposed method have been tested only on Linux and MacOS (Intel) systems. We currently do not support Windows systems, however it might be possible to run using virtual machines.  MacOS(M1) might work but not verified yet (See requirement.txt and https://github.com/apple/tensorflow_macos)
+There are two ways provided to use the code. One is via Jupyter Notebook, which runs on users own PCs or Google Colab. Another way is additional installation of Streamlit and mySQL for GUI-based use. For the latter, it has been tested only on Linux and MacOS (Intel) systems. We currently do not support Windows systems, however it might be possible to run using virtual machines.  MacOS(M1) might work but not verified yet (See requirements.txt and https://github.com/apple/tensorflow_macos)
 
 Verified to work: Ubuntu20.04, Ubuntu18.04, CentOS7, MacOS11(Intel), MacOS12(Intel)
 <br />
@@ -60,7 +60,7 @@ There you can see the process to do calculate the entropy, generate data using a
 
 > Note: In this method, there is no need for installing extra packages or services such as MySQL. However, you wont be able to interactivly check the training process and wont be able to simple drag and drop.
 
-## Setting up the Streamlit GUI - Requeriments:
+## Setting up the Streamlit GUI - Requirements:
 Here we write the requirements for setting up the Streamlit GUI described in the paper. Note, that few extra steps are necessary and are described below
 
 > Note: Since in the Streamlit GUI we use process based paralletization that also allows us to check the learning curves during training, follow the below procedures for setting up MySQL server
