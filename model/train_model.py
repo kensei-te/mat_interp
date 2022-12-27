@@ -61,7 +61,7 @@ def get_batchsize_range(data_length: int) -> List[int]:
         A list of integers to consider as batchsize for model training
     """
     batch_size_ranges = {
-        data_length < 256: [32, 64, 128],
+        data_length < 256: [16, 32, 64],
         (data_length >= 256) & (data_length < 1024): [64, 128, 256],
         (data_length >= 1024) & (data_length < 4096): [128, 256, 512],
         data_length >= 4096: [256, 512, 1024],
@@ -168,7 +168,7 @@ def optimize_neural_net(
     num_trials: int,
     working_dir: str,
     nodes_range: Tuple[int, int] = (50, 200),
-    layers_range: Tuple[int, int] = (3, 10),
+    layers_range: Tuple[int, int] = (2, 10),
     regularizer: Union[str, None] = None,
     regularization_value: Union[str, float] = 0.0,
 ):
