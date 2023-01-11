@@ -15,7 +15,9 @@ For details, refer to: http://arxiv.org/abs/2206.10908
 <br />
 
 ## Operating System
-There are two ways provided to use the code. One is via Jupyter Notebook, which runs on users own PCs or Google Colab therefore this way would be easier to start.
+There are two ways provided to use the code. One is via Jupyter Notebook, called 'Simulation Visualization.ipynb' which is inside the notebooks folder, which runs on users own PCs or Google Colab therefore this way would be easier to start.
+
+> Note: We stress that, the Jupyter notebook provided here is a lightweight version of the work presented in the manuscript, covering only the magnetic entropy change simulation example.
 
 Another way contains additional installation of Streamlit and mySQL for GUI-based use. For this, it has been tested only on Linux and MacOS (Intel) systems. We currently do not support Windows systems, however it might be possible to run using virtual machines.  MacOS(M1) might work but not verified yet (See requirements.txt and https://github.com/apple/tensorflow_macos)
 
@@ -54,13 +56,13 @@ download), and move to the directory (default name: 'mat_interp')
 
 
 ## Jupyter Notebooks  - Usage
-We provide a set of example notebooks, on how to train, compare and simulate the neural network for reproducing the results of magnetocaloric part, specifically for the case of ErCo<sub>2</sub> data.
+We provide a set of examples in the notebook file, on how to train, compare and simulate the neural networks for reproducing the results of magnetocaloric part, specifically for the case of ErCo<sub>2</sub> data (Section3.1 in the manuscript).
 
-After installing the enviroment navigate to the notebooks folder, where and see the 'Simulation Visualization.ipynb'. 
+After installing the environment, navigate to the notebooks folder, and open the 'Simulation Visualization.ipynb' under the environment. 
 
-There you can see the process to do calculate the entropy, generate data using a neural network model, how to search for you own network and comparison with other standard models in the scikit-learn package.
+There you can see the process to do calculate the entropy, generate data using a neural networks model, how to build your own model and comparison with other models in the Scikit-learn package.
 
-> Note: In this method, there is no need for installing extra packages or services such as MySQL. However, you wont be able to interactivly check the training process and wont be able to simple drag and drop.
+> Note: In this method, there is no need for installing extra packages or services such as MySQL. However, you won't be able to interactivly check the training process and won't be able to work on GUI with simple drag and drop.
 
 ## Setting up the Streamlit GUI - Requirements:
 Here we write the requirements for setting up the Streamlit GUI described in the paper. Note, that few extra steps are necessary and are described below
