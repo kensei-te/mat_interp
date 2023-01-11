@@ -15,7 +15,9 @@ For details, refer to: http://arxiv.org/abs/2206.10908
 <br />
 
 ## Operating System
-There are two ways provided to use the code. One is via Jupyter Notebook, which runs on users own PCs or Google Colab therefore this way would be easier to start.  The notebook file is "Simulation Visualization.ipynb", stored at "notebooks" folder (see Jupyter Notebooks - Usage below), which is a lightweight version of the work presented in the manuscript.
+There are two ways provided to use the code. One is via Jupyter Notebook, called 'Simulation Visualization.ipynb' which is inside the notebooks folder, which runs on users own PCs or Google Colab therefore this way would be easier to start.
+
+> Note: We stress that, the Jupyter notebook provided here is a lightweight version of the work presented in the manuscript, covering only the magnetic entropy change simulation example.
 
 Another way contains additional installation of Streamlit and mySQL for GUI-based use. For this, it has been tested only on Linux and MacOS (Intel) systems. We currently do not support Windows systems, however it might be possible to run using virtual machines.  MacOS(M1) might work but not verified yet (See requirements.txt and https://github.com/apple/tensorflow_macos)
 
